@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+<title>GPR Manual</title>
+<link type='text/css' href='style.css' rel='stylesheet'/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body><p><a name='x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h1><span class="navigation"> <a href="#x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29" title="(\&quot;mgl-gpr\&quot; ASDF/SYSTEM:SYSTEM)">&#8594;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8634;</a></span>GPR Manual</h1>
+
+<h2>Table of Contents</h2>
+
+<ul>
+<li><a href="#x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29" title="(\&quot;mgl-gpr\&quot; ASDF/SYSTEM:SYSTEM)">1 mgl-gpr ASDF System Details</a></li>
+<li><a href="#x-28-40GPR-BACKGROUND-20MGL-PAX-3ASECTION-29" title="(@GPR-BACKGROUND MGL-PAX:SECTION)">2 Background</a></li>
+<li><a href="#x-28-40GPR-TUTORIAL-20MGL-PAX-3ASECTION-29" title="(@GPR-TUTORIAL MGL-PAX:SECTION)">3 Tutorial</a></li>
+<li><a href="#x-28-40GPR-EXPRESSIONS-20MGL-PAX-3ASECTION-29" title="(@GPR-EXPRESSIONS MGL-PAX:SECTION)">4 Expressions</a></li>
+<li><a href="#x-28-40GPR-BASICS-20MGL-PAX-3ASECTION-29" title="(@GPR-BASICS MGL-PAX:SECTION)">5 Basics</a></li>
+<li><a href="#x-28-40GPR-SEARCH-SPACE-20MGL-PAX-3ASECTION-29" title="(@GPR-SEARCH-SPACE MGL-PAX:SECTION)">6 Search Space</a></li>
+<li><a href="#x-28-40GPR-REPRODUCTION-20MGL-PAX-3ASECTION-29" title="(@GPR-REPRODUCTION MGL-PAX:SECTION)">7 Reproduction</a></li>
+<li><a href="#x-28-40GPR-ENVIRONMENT-20MGL-PAX-3ASECTION-29" title="(@GPR-ENVIRONMENT MGL-PAX:SECTION)">8 Environment</a></li>
+<li><a href="#x-28-40GPR-INDIVIDUALS-20MGL-PAX-3ASECTION-29" title="(@GPR-INDIVIDUALS MGL-PAX:SECTION)">9 Individuals</a></li>
+</ul>
+
+<h6>[in package MGL-GPR]</h6>
+
+<p><a name='x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-BACKGROUND-20MGL-PAX-3ASECTION-29" title="(@GPR-BACKGROUND MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29" title="(\&quot;mgl-gpr\&quot; ASDF/SYSTEM:SYSTEM)">&#8634;</a></span>1 mgl-gpr ASDF System Details</h2>
+
+<ul>
+<li>Version: 0.0.1</li>
+<li>Description: MGL-GPR is a library for genetic programming: evolving
+  typed expressions for a particular purpose from a set of operators
+  and constants.</li>
+<li>Licence: MIT, see COPYING.</li>
+<li>Author: Gábor Melis</li>
+<li>Mailto: <a href="mailto:mega@retes.hu" >mega@retes.hu</a></li>
+<li>Homepage: <a href="http://quotenil.com" >http://quotenil.com</a></li>
+</ul>
+
+<p><a name='x-28-40GPR-BACKGROUND-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29" title="(\&quot;mgl-gpr\&quot; ASDF/SYSTEM:SYSTEM)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-TUTORIAL-20MGL-PAX-3ASECTION-29" title="(@GPR-TUTORIAL MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-40GPR-BACKGROUND-20MGL-PAX-3ASECTION-29" title="(@GPR-BACKGROUND MGL-PAX:SECTION)">&#8634;</a></span>2 Background</h2>
+
+<p>What is Genetic Programming? This is what Wikipedia has to say:</p>
+
+<pre><code>In artificial intelligence, genetic programming (GP) is an
+evolutionary algorithm-based methodology inspired by biological
+evolution to find computer programs that perform a user-defined
+task. Essentially GP is a set of instructions and a fitness
+function to measure how well a computer has performed a task. It
+is a specialization of genetic algorithms (GA) where each
+individual is a computer program. It is a machine learning
+technique used to optimize a population of computer programs
+according to a fitness landscape determined by a program's ability
+to perform a given computational task.
+</code></pre>
+
+<p>Lisp has a long history of Genetic Programming because GP involves
+manipulation of expressions which is of course particularly easy
+with sexps.</p>
+
+<p>GP is quick to get up and running, can produce good results across
+a wild variety of domains, but it needs quite a bit of fiddling to
+perform well and domain specific approaches will almost always have
+better results. All in all, GP can be very useful to cut down on
+the tedium of human trial and error.</p>
+
+<p>I originally wrote this library while working for Ravenpack who
+agreed to release it under an MIT licence. Several years later I
+cleaned it up, and documented it. Enjoy.</p>
+
+<p><a name='x-28-40GPR-TUTORIAL-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-BACKGROUND-20MGL-PAX-3ASECTION-29" title="(@GPR-BACKGROUND MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-EXPRESSIONS-20MGL-PAX-3ASECTION-29" title="(@GPR-EXPRESSIONS MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-40GPR-TUTORIAL-20MGL-PAX-3ASECTION-29" title="(@GPR-TUTORIAL MGL-PAX:SECTION)">&#8634;</a></span>3 Tutorial</h2>
+
+<p>GPR works with typed expressions. Mutation and crossover never
+produce expressions that fail with a type error. Let's define a
+couple of operators that work with real numbers and also return a
+real:</p>
+
+<pre><code>(defparameter *operators* (list (operator (+ real real) real)
+                                (operator (- real real) real)
+                                (operator (* real real) real)
+                                (operator (sin real) real)))
+</code></pre>
+
+<p>One cannot build an expression out of these operators because they
+all have at least one argument. Let's define some literal classes
+too. The first is produces random numbers, the second always returns
+the symbol <code>*X*</code>:</p>
+
+<pre><code>(defparameter *literals* (list (literal (real)
+                                 (- (random 32.0) 16.0))
+                               (literal (real)
+                                 '*x*)))
+</code></pre>
+
+<p>Armed with <code>*OPERATORS*</code> and <code>*LITERALS*</code>, one can already build
+random expressions with <a href="#x-28RANDOM-EXPRESSION-20FUNCTION-29" title="(RANDOM-EXPRESSION FUNCTION)"><code>RANDOM-EXPRESSION</code></a>, but we also need to
+define how good a certain expression is which is called <em>fitness</em>.</p>
+
+<p>In this example, we are going to perform symbolic regression, that
+is, try to find an expression that approximates some target
+expression well:</p>
+
+<pre><code>(defparameter *target-expr* '(+ 7 (sin (expt (* *x* 2 pi) 2))))
+</code></pre>
+
+<p>Think of <code>*TARGET-EXPR*</code> as a function of <code>*X*</code>. The evaluator
+function will bind the special <code>*X*</code> to the input and simply <code>EVAL</code>
+the expression to be evaluated.</p>
+
+<pre><code>(defvar *x*)
+</code></pre>
+
+<p>The evaluator function calculates the average difference between
+<code>EXPR</code> and <code>TARGET-EXPR</code>, penalizes large expressions and returns
+the fitness of <code>EXPR</code>. Expressions with higher fitness have higher
+chance to produce offsprings.</p>
+
+<pre><code>(defun evaluate (gp expr target-expr)
+  (declare (ignore gp))
+  (/ 1
+     (1+
+      ;; Calculate average difference from target.
+      (/ (loop for x from 0d0 to 10d0 by 0.5d0
+               summing (let ((*x* x))
+                         (abs (- (eval expr)
+                                 (eval target-expr)))))
+         21))
+     ;; Penalize large expressions.
+     (let ((min-penalized-size 40)
+           (size (count-nodes expr)))
+       (if (&lt; size min-penalized-size)
+           1
+           (exp (min 120 (/ (- size min-penalized-size) 10d0)))))))
+</code></pre>
+
+<p>When an expression is to undergo mutation, a randomizer function is
+called. Here we change literal numbers slightly, or produce an
+entirely new random expression that will be substituted for <code>EXPR</code>:</p>
+
+<pre><code>(defun randomize (gp type expr)
+  (if (and (numberp expr)
+           (&lt; (random 1.0) 0.5))
+      (+ expr (random 1.0) -0.5)
+      (random-gp-expression gp (lambda (level)
+                                 (&lt;= 3 level))
+                            :type type)))
+</code></pre>
+
+<p>That's about it. Now we create a <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> instance hooking everything up,
+set up the initial population and just call <a href="#x-28ADVANCE-20FUNCTION-29" title="(ADVANCE FUNCTION)"><code>ADVANCE</code></a> a couple of
+times to create new generations of expressions.</p>
+
+<pre><code>(defun run ()
+  (let ((*print-length* nil)
+        (*print-level* nil)
+        (gp (make-instance
+             'gp
+             :toplevel-type 'number
+             :operators *operators*
+             :literals *literals*
+             :population-size 10000
+             :copy-chance 0.0
+             :mutation-chance 0.2
+             :evaluator (lambda (gp expr)
+                          (evaluate gp expr *target-expr*))
+             :randomizer #'randomize
+             :selector (lambda (gp fitnesses)
+                         (declare (ignore gp))
+                         (hold-tournament fitnesses :n-contestants 2))
+             :fittest-changed-fn
+             (lambda (gp fittest fitness)
+               (format t &quot;Best fitness until generation ~S: ~S for~%  ~S~%&quot;
+                       (generation-counter gp) fitness fittest)))))
+    (loop repeat (population-size gp) do
+      (add-individual gp (random-gp-expression gp (lambda (level)
+                                                    (&lt;= 5 level)))))
+    (loop repeat 100 do
+      (when (zerop (mod (generation-counter gp) 20))
+        (format t &quot;Generation ~S~%&quot; (generation-counter gp)))
+      (advance gp))
+    (destructuring-bind (fittest . fitness) (fittest gp)
+      (format t &quot;Best fitness: ~S for~%  ~S~%&quot; fitness fittest))))
+</code></pre>
+
+<p><a name='x-28-40GPR-EXPRESSIONS-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-TUTORIAL-20MGL-PAX-3ASECTION-29" title="(@GPR-TUTORIAL MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-BASICS-20MGL-PAX-3ASECTION-29" title="(@GPR-BASICS MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-40GPR-EXPRESSIONS-20MGL-PAX-3ASECTION-29" title="(@GPR-EXPRESSIONS MGL-PAX:SECTION)">&#8634;</a></span>4 Expressions</h2>
+
+<p>Genetic programming works with a population of individuals. The
+individuals are sexps that may be evaluated directly by <code>EVAL</code> or by
+other means. The internal nodes and the leafs of the sexp as a tree
+represent the application of operators and literal objects,
+respectively. Note that currently there is no way to represent
+literal lists.</p>
+
+<p><a name='x-28EXPRESSION-CLASS-20CLASS-29'></a></p>
+
+<ul>
+<li><p>[class] <strong>EXPRESSION-CLASS</strong></p>
+
+<p>An object of <a href="#x-28EXPRESSION-CLASS-20CLASS-29" title="(EXPRESSION-CLASS CLASS)"><code>EXPRESSION-CLASS</code></a> defines two things:
+how to build a random expression that belongs to that expression
+class and what lisp type those expressions evaluate to.</p></li>
+</ul>
+
+<p><a name='x-28RESULT-TYPE-20-28MGL-PAX-3AREADER-20EXPRESSION-CLASS-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>RESULT-TYPE</strong> <em>EXPRESSION-CLASS</em></p>
+
+<p>Expressions belonging to this expression class
+must evaluate to a value of this lisp type.</p></li>
+</ul>
+
+<p><a name='x-28OPERATOR-20CLASS-29'></a></p>
+
+<ul>
+<li><p>[class] <strong>OPERATOR</strong> <em>EXPRESSION-CLASS</em></p>
+
+<p>Defines how the symbol <a href="#x-28NAME-20-28MGL-PAX-3AREADER-20OPERATOR-29-29" title="(NAME (MGL-PAX:READER OPERATOR))"><code>NAME</code></a> in the function
+position of a list can be combined arguments: how many and of what
+types. The following defines <code>+</code> as an operator that adds two
+<code>FLOAT</code>s:</p>
+
+<pre><code>(make-instance 'operator 
+               :name '+
+               :result-type float
+               :argument-types '(float float))
+</code></pre>
+
+<p>See the macro <a href="#x-28OPERATOR-20MGL-PAX-3AMACRO-29" title="(OPERATOR MGL-PAX:MACRO)"><code>OPERATOR</code></a> for a shorthand for the above.</p>
+
+<p>Currently no lambda list keywords are supported and there is no way
+to define how an expression with a particular operator is to be
+built. See <a href="#x-28RANDOM-EXPRESSION-20FUNCTION-29" title="(RANDOM-EXPRESSION FUNCTION)"><code>RANDOM-EXPRESSION</code></a>.</p></li>
+</ul>
+
+<p><a name='x-28NAME-20-28MGL-PAX-3AREADER-20OPERATOR-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>NAME</strong> <em>OPERATOR</em></p>
+
+<p>A symbol that's the name of the operator.</p></li>
+</ul>
+
+<p><a name='x-28ARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20OPERATOR-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>ARGUMENT-TYPES</strong> <em>OPERATOR</em></p>
+
+<p>A list of lisp types. One for each argument of
+this operator.</p></li>
+</ul>
+
+<p><a name='x-28OPERATOR-20MGL-PAX-3AMACRO-29'></a></p>
+
+<ul>
+<li><p>[macro] <strong>OPERATOR</strong> <em>(NAME &amp;REST ARG-TYPES) RESULT-TYPE</em></p>
+
+<p>Syntactic sugar for instantiating operators. The example given for
+<a href="#x-28OPERATOR-20CLASS-29" title="(OPERATOR CLASS)"><code>OPERATOR</code></a> could be written as:</p>
+
+<pre><code>(operator (+ float float) float)
+</code></pre></li>
+</ul>
+
+<p><a name='x-28LITERAL-20CLASS-29'></a></p>
+
+<ul>
+<li><p>[class] <strong>LITERAL</strong> <em>EXPRESSION-CLASS</em></p>
+
+<p>This is slightly misnamed. An object belonging to
+the <a href="#x-28LITERAL-20CLASS-29" title="(LITERAL CLASS)"><code>LITERAL</code></a> class is not a literal itself, it's a factory for
+literals via its <a href="#x-28BUILDER-20-28MGL-PAX-3AREADER-20LITERAL-29-29" title="(BUILDER (MGL-PAX:READER LITERAL))"><code>BUILDER</code></a> function. For example, the following
+literal builds bytes:</p>
+
+<pre><code>(make-instance 'literal
+               :result-type '(unsigned-byte 8)
+               :builder (lambda () (random 256)))
+</code></pre>
+
+<p>In practice, one rarely writes it out like that, because the <a href="#x-28LITERAL-20MGL-PAX-3AMACRO-29" title="(LITERAL MGL-PAX:MACRO)"><code>LITERAL</code></a>
+macro provides a more convenient shorthand.</p></li>
+</ul>
+
+<p><a name='x-28BUILDER-20-28MGL-PAX-3AREADER-20LITERAL-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>BUILDER</strong> <em>LITERAL</em></p>
+
+<p>A function of no arguments that returns a random
+literal that belongs to its literal class.</p></li>
+</ul>
+
+<p><a name='x-28LITERAL-20MGL-PAX-3AMACRO-29'></a></p>
+
+<ul>
+<li><p>[macro] <strong>LITERAL</strong> <em>(RESULT-TYPE) &amp;BODY BODY</em></p>
+
+<p>Syntactic sugar for defining literal classes. The example given for
+<a href="#x-28LITERAL-20CLASS-29" title="(LITERAL CLASS)"><code>LITERAL</code></a> could be written as:</p>
+
+<pre><code>(literal ((unsigned-byte 8))
+  (random 256))
+</code></pre></li>
+</ul>
+
+<p><a name='x-28RANDOM-EXPRESSION-20FUNCTION-29'></a></p>
+
+<ul>
+<li><p>[function] <strong>RANDOM-EXPRESSION</strong> <em>OPERATORS LITERALS TYPE TERMINATE-FN</em></p>
+
+<p>Return an expression built from <code>OPERATORS</code> and <code>LITERALS</code> that
+evaluates to values of <code>TYPE</code>. <code>TERMINATE-FN</code> is a function of one
+argument: the level of the root of the subexpression to be generated
+in the context of the entire expression. If it returns <code>T</code> then a
+<a href="#x-28LITERAL-20CLASS-29" title="(LITERAL CLASS)"><code>LITERAL</code></a> will be inserted (by calling its <a href="#x-28BUILDER-20-28MGL-PAX-3AREADER-20LITERAL-29-29" title="(BUILDER (MGL-PAX:READER LITERAL))"><code>BUILDER</code></a> function),
+else an <a href="#x-28OPERATOR-20CLASS-29" title="(OPERATOR CLASS)"><code>OPERATOR</code></a> with all its necessary arguments.</p>
+
+<p>The algorithm recursively generates the expression starting from
+level 0 where only operators and literals with a <a href="#x-28RESULT-TYPE-20-28MGL-PAX-3AREADER-20EXPRESSION-CLASS-29-29" title="(RESULT-TYPE (MGL-PAX:READER EXPRESSION-CLASS))"><code>RESULT-TYPE</code></a> that's
+a subtype of <code>TYPE</code> are considered. On lower levels, the
+<a href="#x-28ARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20OPERATOR-29-29" title="(ARGUMENT-TYPES (MGL-PAX:READER OPERATOR))"><code>ARGUMENT-TYPES</code></a> specification of operators is similarly satisfied and
+the resulting expression should evaluate without without a type
+error.</p>
+
+<p>The building of expressions cannot backtrack. If it finds itself in
+a situation where no literals or operators of the right type are
+available then it will fail with an error.</p></li>
+</ul>
+
+<p><a name='x-28-40GPR-BASICS-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-EXPRESSIONS-20MGL-PAX-3ASECTION-29" title="(@GPR-EXPRESSIONS MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-SEARCH-SPACE-20MGL-PAX-3ASECTION-29" title="(@GPR-SEARCH-SPACE MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-40GPR-BASICS-20MGL-PAX-3ASECTION-29" title="(@GPR-BASICS MGL-PAX:SECTION)">&#8634;</a></span>5 Basics</h2>
+
+<p>To start the evolutionary process one creates a <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> object,
+adds to it the individuals that make up the initial population and
+calls <a href="#x-28ADVANCE-20FUNCTION-29" title="(ADVANCE FUNCTION)"><code>ADVANCE</code></a> in a loop to move on to the next generation.</p>
+
+<p><a name='x-28GP-20CLASS-29'></a></p>
+
+<ul>
+<li><p>[class] <strong>GP</strong></p>
+
+<p>The <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> class defines the search space, how mutation
+and recombination occur, and hold various parameters of the
+evolutionary process and the individuals themselves.</p></li>
+</ul>
+
+<p><a name='x-28ADD-INDIVIDUAL-20FUNCTION-29'></a></p>
+
+<ul>
+<li><p>[function] <strong>ADD-INDIVIDUAL</strong> <em>GP INDIVIDUAL</em></p>
+
+<p>Adds <code>INDIVIDUAL</code> to <a href="#x-28POPULATION-20-28MGL-PAX-3AACCESSOR-20GP-29-29" title="(POPULATION (MGL-PAX:ACCESSOR GP))"><code>POPULATION</code></a> of <code>GP</code>. Usually called to initialize
+the <code>GP</code>, but it is also allowed to add individuals (or change
+<a href="#x-28POPULATION-20-28MGL-PAX-3AACCESSOR-20GP-29-29" title="(POPULATION (MGL-PAX:ACCESSOR GP))"><code>POPULATION</code></a> in any way) in between calls to <a href="#x-28ADVANCE-20FUNCTION-29" title="(ADVANCE FUNCTION)"><code>ADVANCE</code></a>.</p></li>
+</ul>
+
+<p><a name='x-28RANDOM-GP-EXPRESSION-20FUNCTION-29'></a></p>
+
+<ul>
+<li><p>[function] <strong>RANDOM-GP-EXPRESSION</strong> <em>GP TERMINATE-FN &amp;KEY (TYPE (TOPLEVEL-TYPE GP))</em></p>
+
+<p>Creating the initial population by hand is tedious. This
+convenience function calls <a href="#x-28RANDOM-EXPRESSION-20FUNCTION-29" title="(RANDOM-EXPRESSION FUNCTION)"><code>RANDOM-EXPRESSION</code></a> to create a random
+individual that produces <code>GP</code>'s <a href="#x-28TOPLEVEL-TYPE-20-28MGL-PAX-3AREADER-20GP-29-29" title="(TOPLEVEL-TYPE (MGL-PAX:READER GP))"><code>TOPLEVEL-TYPE</code></a>. By passing in another
+<code>TYPE</code> one can create expressions that fit somewhere else in a larger
+expression which is useful in a <a href="#x-28RANDOMIZER-20-28MGL-PAX-3AREADER-20GP-29-29" title="(RANDOMIZER (MGL-PAX:READER GP))"><code>RANDOMIZER</code></a> function.</p></li>
+</ul>
+
+<p><a name='x-28ADVANCE-20FUNCTION-29'></a></p>
+
+<ul>
+<li><p>[function] <strong>ADVANCE</strong> <em>GP</em></p>
+
+<p>Create the next generation and place it in <a href="#x-28POPULATION-20-28MGL-PAX-3AACCESSOR-20GP-29-29" title="(POPULATION (MGL-PAX:ACCESSOR GP))"><code>POPULATION</code></a>.</p></li>
+</ul>
+
+<p><a name='x-28-40GPR-SEARCH-SPACE-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-BASICS-20MGL-PAX-3ASECTION-29" title="(@GPR-BASICS MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-REPRODUCTION-20MGL-PAX-3ASECTION-29" title="(@GPR-REPRODUCTION MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-40GPR-SEARCH-SPACE-20MGL-PAX-3ASECTION-29" title="(@GPR-SEARCH-SPACE MGL-PAX:SECTION)">&#8634;</a></span>6 Search Space</h2>
+
+<p>The search space of the <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> is defined by the available operators,
+literals and the type of the final result produced. The evaluator
+function acts as the guiding light.</p>
+
+<p><a name='x-28OPERATORS-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>OPERATORS</strong> <em>GP</em></p>
+
+<p>The set of <a href="#x-28OPERATOR-20CLASS-29" title="(OPERATOR CLASS)"><code>OPERATOR</code></a>s from which (together
+with <a href="#x-28LITERAL-20CLASS-29" title="(LITERAL CLASS)"><code>LITERAL</code></a>s) individuals are built.</p></li>
+</ul>
+
+<p><a name='x-28LITERALS-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>LITERALS</strong> <em>GP</em></p>
+
+<p>The set of <a href="#x-28LITERAL-20CLASS-29" title="(LITERAL CLASS)"><code>LITERAL</code></a>s from which (together
+with <a href="#x-28OPERATOR-20CLASS-29" title="(OPERATOR CLASS)"><code>OPERATOR</code></a>s) individuals are built.</p></li>
+</ul>
+
+<p><a name='x-28TOPLEVEL-TYPE-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>TOPLEVEL-TYPE</strong> <em>GP</em></p>
+
+<p>The type of the results produced by individuals.
+If the problem is to find the minimum a 1d real function then this
+may be the symbol <code>REAL</code>. If the problem is to find the shortest
+route, then this may be a vector. It all depends on the
+representation of the problem, the operators and the literals.</p></li>
+</ul>
+
+<p><a name='x-28EVALUATOR-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>EVALUATOR</strong> <em>GP</em></p>
+
+<p>A function of two arguments: the <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> object and the
+individual. It must return the fitness of the individual. Often,
+the evaluator just calls <code>EVAL</code>, or <code>COMPILE</code> + <code>FUNCALL</code>, and compares
+the result to some gold standard. It is also typical to slightly
+penalize solution with too many nodes to control complexity and
+evaluation cost (see <a href="#x-28COUNT-NODES-20FUNCTION-29" title="(COUNT-NODES FUNCTION)"><code>COUNT-NODES</code></a>).</p></li>
+</ul>
+
+<p><a name='x-28COUNT-NODES-20FUNCTION-29'></a></p>
+
+<ul>
+<li><p>[function] <strong>COUNT-NODES</strong> <em>TREE &amp;KEY INTERNAL</em></p>
+
+<p>Count the nodes in the sexp <code>TREE</code>. If <code>INTERNAL</code> then don't count the
+leaves.</p></li>
+</ul>
+
+<p><a name='x-28-40GPR-REPRODUCTION-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-SEARCH-SPACE-20MGL-PAX-3ASECTION-29" title="(@GPR-SEARCH-SPACE MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-ENVIRONMENT-20MGL-PAX-3ASECTION-29" title="(@GPR-ENVIRONMENT MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-40GPR-REPRODUCTION-20MGL-PAX-3ASECTION-29" title="(@GPR-REPRODUCTION MGL-PAX:SECTION)">&#8634;</a></span>7 Reproduction</h2>
+
+<p>The <a href="#x-28RANDOMIZER-20-28MGL-PAX-3AREADER-20GP-29-29" title="(RANDOMIZER (MGL-PAX:READER GP))"><code>RANDOMIZER</code></a> and <a href="#x-28SELECTOR-20-28MGL-PAX-3AREADER-20GP-29-29" title="(SELECTOR (MGL-PAX:READER GP))"><code>SELECTOR</code></a> functions define how mutation and
+recombination occur.</p>
+
+<p><a name='x-28RANDOMIZER-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>RANDOMIZER</strong> <em>GP</em></p>
+
+<p>Used for mutations, this is a function of three
+arguments: the <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> object, the type the expression must produce and
+current expression to be replaced with the returned value. It is
+called with subexpressions of individuals.</p></li>
+</ul>
+
+<p><a name='x-28SELECTOR-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>SELECTOR</strong> <em>GP</em></p>
+
+<p>A function of two arguments: the <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> object and a
+vector of fitnesses. It must return the and index into the fitness
+vector. The individual whose fitness was thus selected will be
+selected for reproduction be it mutation or crossover. Typically,
+this defers to <a href="#x-28HOLD-TOURNAMENT-20FUNCTION-29" title="(HOLD-TOURNAMENT FUNCTION)"><code>HOLD-TOURNAMENT</code></a>.</p></li>
+</ul>
+
+<p><a name='x-28HOLD-TOURNAMENT-20FUNCTION-29'></a></p>
+
+<ul>
+<li><p>[function] <strong>HOLD-TOURNAMENT</strong> <em>FITNESSES &amp;KEY SELECT-CONTESTANT-FN N-CONTESTANTS</em></p>
+
+<p>Select <code>N-CONTESTANTS</code> (all different) for the tournament randomly,
+represented by indices into <code>FITNESSES</code> and return the one with the
+highest fitness. If <code>SELECT-CONTESTANT-FN</code> is <code>NIL</code> then contestants are
+selected randomly with uniform probability. If <code>SELECT-CONTESTANT-FN</code>
+is a function, then it's called with <code>FITNESSES</code> to return an
+index (that may or may not be already selected for the tournament).
+Specifying <code>SELECT-CONTESTANT-FN</code> allows one to conduct 'local'
+tournaments biased towards a particular region of the index range.</p></li>
+</ul>
+
+<p><a name='x-28-40GPR-ENVIRONMENT-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-REPRODUCTION-20MGL-PAX-3ASECTION-29" title="(@GPR-REPRODUCTION MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-INDIVIDUALS-20MGL-PAX-3ASECTION-29" title="(@GPR-INDIVIDUALS MGL-PAX:SECTION)">&#8594;</a> <a href="#x-28-40GPR-ENVIRONMENT-20MGL-PAX-3ASECTION-29" title="(@GPR-ENVIRONMENT MGL-PAX:SECTION)">&#8634;</a></span>8 Environment</h2>
+
+<p>The following are just various knobs to control the environment in
+which individuals live.</p>
+
+<p><a name='x-28GENERATION-COUNTER-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>GENERATION-COUNTER</strong> <em>GP</em></p>
+
+<p>A counter that starts from 0 and is incremented by
+<a href="#x-28ADVANCE-20FUNCTION-29" title="(ADVANCE FUNCTION)"><code>ADVANCE</code></a>. All accessors of <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> are allowed to be specialized on a
+subclass of <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> which allows them to be functions of
+<a href="#x-28GENERATION-COUNTER-20-28MGL-PAX-3AREADER-20GP-29-29" title="(GENERATION-COUNTER (MGL-PAX:READER GP))"><code>GENERATION-COUNTER</code></a>.</p></li>
+</ul>
+
+<p><a name='x-28POPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[accessor] <strong>POPULATION-SIZE</strong> <em>GP</em></p>
+
+<p>The number of individuals in a generation.</p></li>
+</ul>
+
+<p><a name='x-28COPY-CHANCE-20-28MGL-PAX-3AACCESSOR-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[accessor] <strong>COPY-CHANCE</strong> <em>GP</em></p>
+
+<p>The probability of an individual selected (by
+<a href="#x-28SELECTOR-20-28MGL-PAX-3AREADER-20GP-29-29" title="(SELECTOR (MGL-PAX:READER GP))"><code>SELECTOR</code></a>) for reproduction to produce an offspring by
+copying (subject to mutation). If it is not copied then it is
+going to be crossed over with another selected individual.</p></li>
+</ul>
+
+<p><a name='x-28MUTATION-CHANCE-20-28MGL-PAX-3AACCESSOR-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[accessor] <strong>MUTATION-CHANCE</strong> <em>GP</em></p>
+
+<p>All new individuals regardless of whether they
+were created by copying or by crossover experience random mutation
+with this chance.</p></li>
+</ul>
+
+<p><a name='x-28KEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[accessor] <strong>KEEP-FITTEST-P</strong> <em>GP</em></p>
+
+<p>If true, then the fittest individual is always
+copied without mutation to the next generation. Of course, it may
+also have other offsprings.</p></li>
+</ul>
+
+<p><a name='x-28-40GPR-INDIVIDUALS-20MGL-PAX-3ASECTION-29'></a></p>
+
+<h2><span class="navigation"> <a href="#x-28-40GPR-ENVIRONMENT-20MGL-PAX-3ASECTION-29" title="(@GPR-ENVIRONMENT MGL-PAX:SECTION)">&#8592;</a> <a href="#x-28-40GPR-MANUAL-20MGL-PAX-3ASECTION-29" title="(@GPR-MANUAL MGL-PAX:SECTION)">&#8593;</a> <a href="#x-28-40GPR-INDIVIDUALS-20MGL-PAX-3ASECTION-29" title="(@GPR-INDIVIDUALS MGL-PAX:SECTION)">&#8634;</a></span>9 Individuals</h2>
+
+<p><a name='x-28POPULATION-20-28MGL-PAX-3AACCESSOR-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[accessor] <strong>POPULATION</strong> <em>GP</em></p>
+
+<p>An adjustable array with a fill-pointer that holds
+the individuals that make up the population.</p></li>
+</ul>
+
+<p><a name='x-28FITTEST-20-28MGL-PAX-3AREADER-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>FITTEST</strong> <em>GP</em></p>
+
+<p>The fittest individual ever to be seen by this <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a>
+and its fittness as a cons cell.</p></li>
+</ul>
+
+<p><a name='x-28FITTEST-CHANGED-FN-20-28MGL-PAX-3AACCESSOR-20GP-29-29'></a></p>
+
+<ul>
+<li><p>[accessor] <strong>FITTEST-CHANGED-FN</strong> <em>GP</em></p>
+
+<p>If non-NIL, a function that's called when <a href="#x-28FITTEST-20-28MGL-PAX-3AREADER-20GP-29-29" title="(FITTEST (MGL-PAX:READER GP))"><code>FITTEST</code></a>
+is updated with three arguments: the <a href="#x-28GP-20CLASS-29" title="(GP CLASS)"><code>GP</code></a> object, the fittest
+individual and its fitness. Useful for tracking progress.</p></li>
+</ul>
+</body>
+</html>
