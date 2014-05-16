@@ -19,8 +19,7 @@
                               (* -3 *x*)
                               1))
 
-(defparameter *test-expr-1* '(+ (sin (* *x* pi 10))
-                              (* 3 (expt *x* 4))
+(defparameter *test-expr-1* '(+ (sin (* *x* pi 0.1))
                               (* -3 *x*)
                               1))
 
