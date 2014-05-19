@@ -57,7 +57,7 @@
   One cannot build an expression out of these operators because they
   all have at least one argument. Let's define some literal classes
   too. The first is produces random numbers, the second always returns
-  the symbol *X*:
+  the symbol `*X*`:
 
       (defparameter *literals* (list (literal (real)
                                        (- (random 32.0) 16.0))
