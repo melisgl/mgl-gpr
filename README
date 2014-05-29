@@ -169,6 +169,12 @@ literal lists.
     Expressions belonging to this expression class
     must evaluate to a value of this lisp type.
 
+- [reader] WEIGHT EXPRESSION-CLASS
+
+    The probability of an expression class to be
+    selected from a set of candidates is proportional to its
+    weight.
+
 - [class] OPERATOR EXPRESSION-CLASS
 
     Defines how the symbol NAME in the function
@@ -196,13 +202,14 @@ literal lists.
     A list of lisp types. One for each argument of
     this operator.
 
-- [macro] OPERATOR (NAME &REST ARG-TYPES) RESULT-TYPE
+- [macro] OPERATOR (NAME &REST ARG-TYPES) RESULT-TYPE &KEY (WEIGHT 1)
 
     Syntactic sugar for instantiating operators. The example given for
     [OPERATOR][class] could be written as:
     
         (operator (+ float float) float)
-
+    
+    See [WEIGHT][(reader expression-class)] for what WEIGHT means.
 
 - [class] LITERAL EXPRESSION-CLASS
 
@@ -223,14 +230,15 @@ literal lists.
     A function of no arguments that returns a random
     literal that belongs to its literal class.
 
-- [macro] LITERAL (RESULT-TYPE) &BODY BODY
+- [macro] LITERAL (RESULT-TYPE &KEY (WEIGHT 1)) &BODY BODY
 
     Syntactic sugar for defining literal classes. The example given for
     [LITERAL][class] could be written as:
     
         (literal ((unsigned-byte 8))
           (random 256))
-
+    
+    See [WEIGHT][(reader expression-class)] for what WEIGHT means.
 
 - [function] RANDOM-EXPRESSION OPERATORS LITERALS TYPE TERMINATE-FN
 
@@ -243,7 +251,8 @@ literal lists.
     
     The algorithm recursively generates the expression starting from
     level 0 where only operators and literals with a RESULT-TYPE that's
-    a subtype of TYPE are considered. On lower levels, the
+    a subtype of TYPE are considered and one is selected with the
+    unnormalized probability given by its WEIGHT. On lower levels, the
     ARGUMENT-TYPES specification of operators is similarly satisfied and
     the resulting expression should evaluate without without a type
     error.

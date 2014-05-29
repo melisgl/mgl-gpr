@@ -195,6 +195,14 @@ literal lists.
     Expressions belonging to this expression class
     must evaluate to a value of this lisp type.
 
+<a name='x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29'></a>
+
+- [reader] **WEIGHT** *EXPRESSION-CLASS*
+
+    The probability of an expression class to be
+    selected from a set of candidates is proportional to its
+    weight.
+
 <a name='x-28MGL-GPR-3AOPERATOR-20CLASS-29'></a>
 
 - [class] **OPERATOR** *EXPRESSION-CLASS*
@@ -230,13 +238,14 @@ literal lists.
 
 <a name='x-28MGL-GPR-3AOPERATOR-20MGL-PAX-3AMACRO-29'></a>
 
-- [macro] **OPERATOR** *(NAME &REST ARG-TYPES) RESULT-TYPE*
+- [macro] **OPERATOR** *(NAME &REST ARG-TYPES) RESULT-TYPE &KEY (WEIGHT 1)*
 
     Syntactic sugar for instantiating operators. The example given for
     [`OPERATOR`][ea46] could be written as:
     
         (operator (+ float float) float)
-
+    
+    See [`WEIGHT`][b568] for what `WEIGHT` means.
 
 <a name='x-28MGL-GPR-3ALITERAL-20CLASS-29'></a>
 
@@ -263,14 +272,15 @@ literal lists.
 
 <a name='x-28MGL-GPR-3ALITERAL-20MGL-PAX-3AMACRO-29'></a>
 
-- [macro] **LITERAL** *(RESULT-TYPE) &BODY BODY*
+- [macro] **LITERAL** *(RESULT-TYPE &KEY (WEIGHT 1)) &BODY BODY*
 
     Syntactic sugar for defining literal classes. The example given for
     [`LITERAL`][5af0] could be written as:
     
         (literal ((unsigned-byte 8))
           (random 256))
-
+    
+    See [`WEIGHT`][b568] for what `WEIGHT` means.
 
 <a name='x-28MGL-GPR-3ARANDOM-EXPRESSION-20FUNCTION-29'></a>
 
@@ -285,7 +295,8 @@ literal lists.
     
     The algorithm recursively generates the expression starting from
     level 0 where only operators and literals with a [`RESULT-TYPE`][27ef] that's
-    a subtype of `TYPE` are considered. On lower levels, the
+    a subtype of `TYPE` are considered and one is selected with the
+    unnormalized probability given by its [`WEIGHT`][b568]. On lower levels, the
     [`ARGUMENT-TYPES`][cb67] specification of operators is similarly satisfied and
     the resulting expression should evaluate without without a type
     error.
@@ -513,6 +524,7 @@ which individuals live.
   [8bb2]: #x-28MGL-GPR-3ABUILDER-20-28MGL-PAX-3AREADER-20MGL-GPR-3ALITERAL-29-29 "(MGL-GPR:BUILDER (MGL-PAX:READER MGL-GPR:LITERAL))"
   [8d6c]: #x-28MGL-GPR-3A-40GPR-SEARCH-SPACE-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-SEARCH-SPACE MGL-PAX:SECTION)"
   [8f13]: #x-28MGL-GPR-3AGP-20CLASS-29 "(MGL-GPR:GP CLASS)"
+  [b568]: #x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29 "(MGL-GPR:WEIGHT (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"
   [b6e1]: #x-28MGL-GPR-3A-40GPR-INDIVIDUALS-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-INDIVIDUALS MGL-PAX:SECTION)"
   [cb67]: #x-28MGL-GPR-3AARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29 "(MGL-GPR:ARGUMENT-TYPES (MGL-PAX:READER MGL-GPR:OPERATOR))"
   [d1ea]: #x-28MGL-GPR-3ALITERAL-20MGL-PAX-3AMACRO-29 "(MGL-GPR:LITERAL MGL-PAX:MACRO)"

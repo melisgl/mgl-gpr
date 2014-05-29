@@ -218,6 +218,16 @@ class and what lisp type those expressions evaluate to.</p></li>
 must evaluate to a value of this lisp type.</p></li>
 </ul>
 
+<p><a name='x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>WEIGHT</strong> <em>EXPRESSION-CLASS</em></p>
+
+<p>The probability of an expression class to be
+selected from a set of candidates is proportional to its
+weight.</p></li>
+</ul>
+
 <p><a name='x-28MGL-GPR-3AOPERATOR-20CLASS-29'></a></p>
 
 <ul>
@@ -261,13 +271,15 @@ this operator.</p></li>
 <p><a name='x-28MGL-GPR-3AOPERATOR-20MGL-PAX-3AMACRO-29'></a></p>
 
 <ul>
-<li><p>[macro] <strong>OPERATOR</strong> <em>(NAME &amp;REST ARG-TYPES) RESULT-TYPE</em></p>
+<li><p>[macro] <strong>OPERATOR</strong> <em>(NAME &amp;REST ARG-TYPES) RESULT-TYPE &amp;KEY (WEIGHT 1)</em></p>
 
 <p>Syntactic sugar for instantiating operators. The example given for
 <a href="#x-28MGL-GPR-3AOPERATOR-20CLASS-29" title="(MGL-GPR:OPERATOR CLASS)"><code>OPERATOR</code></a> could be written as:</p>
 
 <pre><code>(operator (+ float float) float)
-</code></pre></li>
+</code></pre>
+
+<p>See <a href="#x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29" title="(MGL-GPR:WEIGHT (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"><code>WEIGHT</code></a> for what <code>WEIGHT</code> means.</p></li>
 </ul>
 
 <p><a name='x-28MGL-GPR-3ALITERAL-20CLASS-29'></a></p>
@@ -301,14 +313,16 @@ literal that belongs to its literal class.</p></li>
 <p><a name='x-28MGL-GPR-3ALITERAL-20MGL-PAX-3AMACRO-29'></a></p>
 
 <ul>
-<li><p>[macro] <strong>LITERAL</strong> <em>(RESULT-TYPE) &amp;BODY BODY</em></p>
+<li><p>[macro] <strong>LITERAL</strong> <em>(RESULT-TYPE &amp;KEY (WEIGHT 1)) &amp;BODY BODY</em></p>
 
 <p>Syntactic sugar for defining literal classes. The example given for
 <a href="#x-28MGL-GPR-3ALITERAL-20CLASS-29" title="(MGL-GPR:LITERAL CLASS)"><code>LITERAL</code></a> could be written as:</p>
 
 <pre><code>(literal ((unsigned-byte 8))
   (random 256))
-</code></pre></li>
+</code></pre>
+
+<p>See <a href="#x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29" title="(MGL-GPR:WEIGHT (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"><code>WEIGHT</code></a> for what <code>WEIGHT</code> means.</p></li>
 </ul>
 
 <p><a name='x-28MGL-GPR-3ARANDOM-EXPRESSION-20FUNCTION-29'></a></p>
@@ -325,7 +339,8 @@ else an <a href="#x-28MGL-GPR-3AOPERATOR-20CLASS-29" title="(MGL-GPR:OPERATOR CL
 
 <p>The algorithm recursively generates the expression starting from
 level 0 where only operators and literals with a <a href="#x-28MGL-GPR-3ARESULT-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29" title="(MGL-GPR:RESULT-TYPE (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"><code>RESULT-TYPE</code></a> that's
-a subtype of <code>TYPE</code> are considered. On lower levels, the
+a subtype of <code>TYPE</code> are considered and one is selected with the
+unnormalized probability given by its <a href="#x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29" title="(MGL-GPR:WEIGHT (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"><code>WEIGHT</code></a>. On lower levels, the
 <a href="#x-28MGL-GPR-3AARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29" title="(MGL-GPR:ARGUMENT-TYPES (MGL-PAX:READER MGL-GPR:OPERATOR))"><code>ARGUMENT-TYPES</code></a> specification of operators is similarly satisfied and
 the resulting expression should evaluate without without a type
 error.</p>

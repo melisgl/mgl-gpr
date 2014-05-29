@@ -28,22 +28,25 @@
              (replace vec vec :start1 0 :start2 1 :end2 pos)
              (setf (aref vec (1- pos)) item))))))
 
-(defun flatten (x)
-  (if (atom x)
-      (list x)
-      (mapcan #'flatten x)))
+(defun random-element (seq &key (key #'identity)
+                       (start 0) (end (length seq))
+                       (sum (sum-seq seq :key key :start start :end end)))
+  "Choose an element randomly from the [START,END) subsequence of SEQ
+  with given probabilities. KEY returns the unormalized probability of
+  an element, SUM is the sum of these unnormalized probalities
+  contains unnormalized probabilties. Return the element chosen and
+  its index."
+  (let ((x (random (float sum 0d0))))
+    (do* ((i start (1+ i))
+          (e (elt seq i) (elt seq i))
+          (s (funcall key e) (+ s (funcall key e))))
+         ((or (<= x s) (>= i (1- end))) (values e i)))))
 
-(defun select-randomly (weights)
-  "Return the index of the weight in WEIGHTS that ..."
-  (let ((x (random 1.0d0)))
-    (loop for i below (length weights)
-          for w = (aref weights i)
-          summing w into sum
-          while (<= sum x)
-          finally (return i))))
-
-(defun normalize-vector (vector)
-  (let ((sum (loop for e across vector do (assert (<= e))
-                   summing e)))
-    (loop for i below (length vector)
-          do (setf (aref vector i) (/ (aref vector i) sum)))))
+(defun sum-seq (seq &key (key #'identity) (start 0) (end (length seq)))
+  "Return the sum of elements in the [START,END) subsequence of SEQ."
+  (if (typep seq 'list)
+      (loop repeat (- end start)
+            for l = (nthcdr start seq) then (cdr l)
+            sum (funcall key (car l)))
+      (loop for i upfrom start below end
+            sum (funcall key (aref seq i)))))

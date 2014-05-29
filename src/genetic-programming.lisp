@@ -1,7 +1,3 @@
-;;;; TODO
-;;;;
-;;;; - add weight to operators and literals?
-
 (in-package :mgl-gpr)
 
 (defsection @gpr-manual (:title "GPR Manual")
@@ -158,6 +154,7 @@
   literal lists."
   (expression-class class)
   (result-type (reader expression-class))
+  (weight (reader expression-class))
   (operator class)
   (name (reader operator))
   (argument-types (reader operator))
@@ -172,10 +169,20 @@
     :initarg :result-type
     :reader result-type
     :documentation "Expressions belonging to this expression class
-    must evaluate to a value of this lisp type."))
+    must evaluate to a value of this lisp type.")
+   (weight
+    :initform 1
+    :initarg :weight
+    :reader weight
+    :documentation "The probability of an expression class to be
+    selected from a set of candidates is proportional to its
+    weight."))
   (:documentation "An object of EXPRESSION-CLASS defines two things:
   how to build a random expression that belongs to that expression
   class and what lisp type those expressions evaluate to."))
+
+(defun random-expression-class (expression-classes)
+  (random-element expression-classes :key #'weight))
 
 (defclass operator (expression-class)
   ((name
@@ -208,13 +215,16 @@
     (format stream "(~S ~{~S~^ ~}) ~S" (name operator)
             (argument-types operator) (result-type operator))))
 
-(defmacro operator ((name &rest arg-types) result-type)
+(defmacro operator ((name &rest arg-types) result-type &key (weight 1))
   "Syntactic sugar for instantiating operators. The example given for
   [OPERATOR][class] could be written as:
 
-      (operator (+ float float) float)"
+      (operator (+ float float) float)
+
+  See [WEIGHT][(reader expression-class)] for what WEIGHT means."
   `(make-instance 'operator :name ',name :result-type ',result-type
-                  :argument-types ',arg-types))
+                  :argument-types ',arg-types
+                  :weight ,weight))
 
 (defclass literal (expression-class)
   ((builder
@@ -238,13 +248,16 @@
   (print-unreadable-object (literal stream :type t :identity t)
     (format stream "~S" (result-type literal))))
 
-(defmacro literal ((result-type) &body body)
+(defmacro literal ((result-type &key (weight 1)) &body body)
   "Syntactic sugar for defining literal classes. The example given for
   [LITERAL][class] could be written as:
 
       (literal ((unsigned-byte 8))
-        (random 256))"
+        (random 256))
+
+  See [WEIGHT][(reader expression-class)] for what WEIGHT means."
   `(make-instance 'literal :result-type ',result-type
+                  :weight ,weight
                   :builder (lambda () ,@body)))
 
 (defun random-expression (operators literals type terminate-fn)
@@ -257,7 +270,8 @@
 
   The algorithm recursively generates the expression starting from
   level 0 where only operators and literals with a RESULT-TYPE that's
-  a subtype of TYPE are considered. On lower levels, the
+  a subtype of TYPE are considered and one is selected with the
+  unnormalized probability given by its WEIGHT. On lower levels, the
   ARGUMENT-TYPES specification of operators is similarly satisfied and
   the resulting expression should evaluate without without a type
   error.
@@ -273,12 +287,12 @@
              (let ((literals (expression-classes-of-type literals type)))
                (assert literals () "No literals of type ~S available."
                        type)
-               (funcall (builder (alexandria:random-elt literals)))))
+               (funcall (builder (random-expression-class literals)))))
            (random-operator (type level)
              (let ((operators (expression-classes-of-type operators type)))
                (if (endp operators)
                    (random-literal type)
-                   (let ((operator (alexandria:random-elt operators)))
+                   (let ((operator (random-expression-class operators)))
                      (cons (name operator)
                            (mapcar #'(lambda (type)
                                        (random-operator-or-literal
