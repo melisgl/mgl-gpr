@@ -142,15 +142,15 @@ times to create new generations of expressions.
             (*print-level* nil)
             (gp (make-instance
                  'gp
-                 :toplevel-type 'number
+                 :toplevel-type 'real
                  :operators *operators*
                  :literals *literals*
-                 :population-size 10000
+                 :population-size 1000
                  :copy-chance 0.0
-                 :mutation-chance 0.2
+                 :mutation-chance 0.5
                  :evaluator (lambda (gp expr)
                               (evaluate gp expr *target-expr*))
-                 :randomizer #'randomize
+                 :randomizer 'randomize
                  :selector (lambda (gp fitnesses)
                              (declare (ignore gp))
                              (hold-tournament fitnesses :n-contestants 2))
@@ -161,13 +161,15 @@ times to create new generations of expressions.
         (loop repeat (population-size gp) do
           (add-individual gp (random-gp-expression gp (lambda (level)
                                                         (<= 5 level)))))
-        (loop repeat 100 do
+        (loop repeat 1000 do
           (when (zerop (mod (generation-counter gp) 20))
             (format t "Generation ~S~%" (generation-counter gp)))
           (advance gp))
         (destructuring-bind (fittest . fitness) (fittest gp)
           (format t "Best fitness: ~S for~%  ~S~%" fitness fittest))))
 
+Note that this example can be found in
+example/symbolic-regression.lisp.
 
 <a name='x-28MGL-GPR-3A-40GPR-EXPRESSIONS-20MGL-PAX-3ASECTION-29'></a>
 
@@ -430,8 +432,8 @@ recombination occur.
     A function of two arguments: the [`GP`][8f13] object and a
     vector of fitnesses. It must return the and index into the fitness
     vector. The individual whose fitness was thus selected will be
-    selected for reproduction be it mutation or crossover. Typically,
-    this defers to [`HOLD-TOURNAMENT`][119c].
+    selected for reproduction be it copying, mutation or crossover.
+    Typically, this defers to [`HOLD-TOURNAMENT`][119c].
 
 <a name='x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29'></a>
 
@@ -468,22 +470,28 @@ which individuals live.
 
     The number of individuals in a generation.
 
+The new generation is created by applying a reproduction operator
+until [`POPULATION-SIZE`][464d] is reached in the new generation. At each
+step, a reproduction operator is randomly chosen.
+
 <a name='x-28MGL-GPR-3ACOPY-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29'></a>
 
 - [accessor] **COPY-CHANCE** *GP*
 
-    The probability of an individual selected (by
-    [`SELECTOR`][17d6]) for reproduction to produce an offspring by
-    copying (subject to mutation). If it is not copied then it is
-    going to be crossed over with another selected individual.
+    The probability of the copying reproduction
+    operator being chosen. Copying simply creates an exact copy of a
+    single individual.
 
 <a name='x-28MGL-GPR-3AMUTATION-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29'></a>
 
 - [accessor] **MUTATION-CHANCE** *GP*
 
-    All new individuals regardless of whether they
-    were created by copying or by crossover experience random mutation
-    with this chance.
+    The probability of the mutation reproduction
+    operator being chosen. Mutation creates a randomly altered copy of
+    an individual. See [`RANDOMIZER`][d34a].
+
+If neither copying nor mutation were chosen, then a crossover will
+take place.
 
 <a name='x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29'></a>
 
@@ -527,6 +535,7 @@ which individuals live.
   [27ef]: #x-28MGL-GPR-3ARESULT-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29 "(MGL-GPR:RESULT-TYPE (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"
   [2af3]: #x-28MGL-GPR-3AEXPRESSION-CLASS-20CLASS-29 "(MGL-GPR:EXPRESSION-CLASS CLASS)"
   [3071]: #x-28MGL-GPR-3ANAME-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29 "(MGL-GPR:NAME (MGL-PAX:READER MGL-GPR:OPERATOR))"
+  [464d]: #x-28MGL-GPR-3APOPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29 "(MGL-GPR:POPULATION-SIZE (MGL-PAX:ACCESSOR MGL-GPR:GP))"
   [5af0]: #x-28MGL-GPR-3ALITERAL-20CLASS-29 "(MGL-GPR:LITERAL CLASS)"
   [6028]: #x-28MGL-GPR-3A-40GPR-REPRODUCTION-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-REPRODUCTION MGL-PAX:SECTION)"
   [61ed]: #x-28MGL-GPR-3A-40GPR-BASICS-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-BASICS MGL-PAX:SECTION)"

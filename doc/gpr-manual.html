@@ -161,15 +161,15 @@ times to create new generations of expressions.</p>
         (*print-level* nil)
         (gp (make-instance
              'gp
-             :toplevel-type 'number
+             :toplevel-type 'real
              :operators *operators*
              :literals *literals*
-             :population-size 10000
+             :population-size 1000
              :copy-chance 0.0
-             :mutation-chance 0.2
+             :mutation-chance 0.5
              :evaluator (lambda (gp expr)
                           (evaluate gp expr *target-expr*))
-             :randomizer #'randomize
+             :randomizer 'randomize
              :selector (lambda (gp fitnesses)
                          (declare (ignore gp))
                          (hold-tournament fitnesses :n-contestants 2))
@@ -180,13 +180,16 @@ times to create new generations of expressions.</p>
     (loop repeat (population-size gp) do
       (add-individual gp (random-gp-expression gp (lambda (level)
                                                     (&lt;= 5 level)))))
-    (loop repeat 100 do
+    (loop repeat 1000 do
       (when (zerop (mod (generation-counter gp) 20))
         (format t &quot;Generation ~S~%&quot; (generation-counter gp)))
       (advance gp))
     (destructuring-bind (fittest . fitness) (fittest gp)
       (format t &quot;Best fitness: ~S for~%  ~S~%&quot; fitness fittest))))
 </code></pre>
+
+<p>Note that this example can be found in
+example/symbolic-regression.lisp.</p>
 
 <p><a name='x-28MGL-GPR-3A-40GPR-EXPRESSIONS-20MGL-PAX-3ASECTION-29'></a></p>
 
@@ -498,8 +501,8 @@ called with subexpressions of individuals.</p></li>
 <p>A function of two arguments: the <a href="#x-28MGL-GPR-3AGP-20CLASS-29" title="(MGL-GPR:GP CLASS)"><code>GP</code></a> object and a
 vector of fitnesses. It must return the and index into the fitness
 vector. The individual whose fitness was thus selected will be
-selected for reproduction be it mutation or crossover. Typically,
-this defers to <a href="#x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29" title="(MGL-GPR:HOLD-TOURNAMENT FUNCTION)"><code>HOLD-TOURNAMENT</code></a>.</p></li>
+selected for reproduction be it copying, mutation or crossover.
+Typically, this defers to <a href="#x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29" title="(MGL-GPR:HOLD-TOURNAMENT FUNCTION)"><code>HOLD-TOURNAMENT</code></a>.</p></li>
 </ul>
 
 <p><a name='x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29'></a></p>
@@ -543,15 +546,18 @@ subclass of <a href="#x-28MGL-GPR-3AGP-20CLASS-29" title="(MGL-GPR:GP CLASS)"><c
 <p>The number of individuals in a generation.</p></li>
 </ul>
 
+<p>The new generation is created by applying a reproduction operator
+until <a href="#x-28MGL-GPR-3APOPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:POPULATION-SIZE (MGL-PAX:ACCESSOR MGL-GPR:GP))"><code>POPULATION-SIZE</code></a> is reached in the new generation. At each
+step, a reproduction operator is randomly chosen.</p>
+
 <p><a name='x-28MGL-GPR-3ACOPY-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29'></a></p>
 
 <ul>
 <li><p>[accessor] <strong>COPY-CHANCE</strong> <em>GP</em></p>
 
-<p>The probability of an individual selected (by
-<a href="#x-28MGL-GPR-3ASELECTOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:SELECTOR (MGL-PAX:READER MGL-GPR:GP))"><code>SELECTOR</code></a>) for reproduction to produce an offspring by
-copying (subject to mutation). If it is not copied then it is
-going to be crossed over with another selected individual.</p></li>
+<p>The probability of the copying reproduction
+operator being chosen. Copying simply creates an exact copy of a
+single individual.</p></li>
 </ul>
 
 <p><a name='x-28MGL-GPR-3AMUTATION-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29'></a></p>
@@ -559,10 +565,13 @@ going to be crossed over with another selected individual.</p></li>
 <ul>
 <li><p>[accessor] <strong>MUTATION-CHANCE</strong> <em>GP</em></p>
 
-<p>All new individuals regardless of whether they
-were created by copying or by crossover experience random mutation
-with this chance.</p></li>
+<p>The probability of the mutation reproduction
+operator being chosen. Mutation creates a randomly altered copy of
+an individual. See <a href="#x-28MGL-GPR-3ARANDOMIZER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:RANDOMIZER (MGL-PAX:READER MGL-GPR:GP))"><code>RANDOMIZER</code></a>.</p></li>
 </ul>
+
+<p>If neither copying nor mutation were chosen, then a crossover will
+take place.</p>
 
 <p><a name='x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29'></a></p>
 

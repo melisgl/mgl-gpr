@@ -119,15 +119,15 @@
               (*print-level* nil)
               (gp (make-instance
                    'gp
-                   :toplevel-type 'number
+                   :toplevel-type 'real
                    :operators *operators*
                    :literals *literals*
-                   :population-size 10000
+                   :population-size 1000
                    :copy-chance 0.0
-                   :mutation-chance 0.2
+                   :mutation-chance 0.5
                    :evaluator (lambda (gp expr)
                                 (evaluate gp expr *target-expr*))
-                   :randomizer #'randomize
+                   :randomizer 'randomize
                    :selector (lambda (gp fitnesses)
                                (declare (ignore gp))
                                (hold-tournament fitnesses :n-contestants 2))
@@ -138,12 +138,15 @@
           (loop repeat (population-size gp) do
             (add-individual gp (random-gp-expression gp (lambda (level)
                                                           (<= 5 level)))))
-          (loop repeat 100 do
+          (loop repeat 1000 do
             (when (zerop (mod (generation-counter gp) 20))
               (format t \"Generation ~S~%\" (generation-counter gp)))
             (advance gp))
           (destructuring-bind (fittest . fitness) (fittest gp)
-            (format t \"Best fitness: ~S for~%  ~S~%\" fitness fittest))))")
+            (format t \"Best fitness: ~S for~%  ~S~%\" fitness fittest))))
+
+  Note that this example can be found in
+  example/symbolic-regression.lisp.")
 
 (defsection @gpr-expressions (:title "Expressions")
   "Genetic programming works with a population of individuals. The
@@ -367,8 +370,8 @@
     :documentation "A function of two arguments: the GP object and a
     vector of fitnesses. It must return the and index into the fitness
     vector. The individual whose fitness was thus selected will be
-    selected for reproduction be it mutation or crossover. Typically,
-    this defers to HOLD-TOURNAMENT.")
+    selected for reproduction be it copying, mutation or crossover.
+    Typically, this defers to HOLD-TOURNAMENT.")
    (generation-counter
     :initform 0
     :reader generation-counter
@@ -384,17 +387,16 @@
     :initform 0
     :initarg :copy-chance
     :accessor copy-chance
-    :documentation "The probability of an individual selected (by
-    SELECTOR) for reproduction to produce an offspring by
-    copying (subject to mutation). If it is not copied then it is
-    going to be crossed over with another selected individual.")
+    :documentation "The probability of the copying reproduction
+    operator being chosen. Copying simply creates an exact copy of a
+    single individual.")
    (mutation-chance
     :initform 0
     :initarg :mutation-chance
     :accessor mutation-chance
-    :documentation "All new individuals regardless of whether they
-    were created by copying or by crossover experience random mutation
-    with this chance.")
+    :documentation "The probability of the mutation reproduction
+    operator being chosen. Mutation creates a randomly altered copy of
+    an individual. See RANDOMIZER.")
    (keep-fittest-p
     :initform t
     :initarg :keep-fittest-p
@@ -476,8 +478,13 @@
   which individuals live."
   (generation-counter (reader gp))
   (population-size (accessor gp))
+  "The new generation is created by applying a reproduction operator
+  until POPULATION-SIZE is reached in the new generation. At each
+  step, a reproduction operator is randomly chosen."
   (copy-chance (accessor gp))
   (mutation-chance (accessor gp))
+  "If neither copying nor mutation were chosen, then a crossover will
+  take place."
   (keep-fittest-p (accessor gp)))
 
 (defsection @gpr-individuals (:title "Individuals")
@@ -514,36 +521,57 @@
                (car (fittest gp)) (cdr (fittest gp))))))
 
 (defun breed (gp)
-  (let* ((fitnesses (fitnesses gp))
-         (population (population gp))
+  (let* ((population (population gp))
          (n (population-size gp))
          (copy-chance (copy-chance gp))
          (mutation-chance (mutation-chance gp))
-         (nursery (nursery gp))
-         (selector (selector gp)))
+         (nursery (nursery gp)))
     (setf (fill-pointer nursery) 0)
     (when (keep-fittest-p gp)
-      (let ((i (nth-value 1 (max-position/vector fitnesses))))
+      (let ((i (nth-value 1 (max-position/vector (fitnesses gp)))))
         (vector-push-extend (aref population i) nursery)))
-    (flet ((maybe-mutate (a)
-             (if (try-chance mutation-chance)
-                 (mutate gp a)
-                 a)))
-      (loop while (< (length nursery) n) do
-        (let* ((xi (funcall selector gp fitnesses))
-               (x (aref population xi)))
-          (if (try-chance copy-chance)
-              (vector-push-extend (maybe-mutate x) nursery)
-              (let ((y (aref population (funcall selector gp fitnesses))))
-                (multiple-value-bind (a b) (crossover gp x y)
-                  (vector-push-extend (maybe-mutate a) nursery)
-                  (when (< (length nursery) n)
-                    (vector-push-extend (maybe-mutate b) nursery))))))))))
+    (loop while (< (length nursery) n) do
+      (let* ((what (random 1.0)))
+        (cond ((< what copy-chance)
+               (copy-some gp population nursery))
+              ((< what (+ copy-chance mutation-chance))
+               (mutate-some gp population nursery))
+              (t
+               (crossover-some gp population nursery)))))))
 
-(defun try-chance (chance)
-  (< (random 1.0) chance))
+(defun copy-some (gp population nursery)
+  (let ((selector (selector gp))
+        (fitnesses (fitnesses gp)))
+    (let* ((xi (funcall selector gp fitnesses))
+           (x (aref population xi)))
+      (vector-push-extend x nursery))))
 
-(defun crossover (gp x y)
+(defun mutate-some (gp population nursery)
+  (let ((selector (selector gp))
+        (fitnesses (fitnesses gp)))
+    (let* ((xi (funcall selector gp fitnesses))
+           (x (aref population xi)))
+      (vector-push-extend (mutate gp x) nursery))))
+
+(defun crossover-some (gp population nursery)
+  (let ((n (population-size gp))
+        (selector (selector gp))
+        (fitnesses (fitnesses gp)))
+    (let* ((xi (funcall selector gp fitnesses))
+           (x (aref population xi)))
+      (let ((y (aref population (funcall selector gp fitnesses))))
+        (multiple-value-bind (a b) (crossover gp x y)
+          (vector-push-extend a nursery)
+          (when (< (length nursery) n)
+            (vector-push-extend b nursery)))))))
+
+(defun mutate-expression (gp x)
+  (let* ((xs (count-nodes x))
+         (xi (random xs))
+         (type (node-expected-type gp x xi)))
+    (change-node-at x xi (funcall (randomizer gp) gp type (node-at x xi)))))
+
+(defun crossover-expressions (gp x y)
   (loop for i upfrom 1 do
     (when (zerop (mod i 1000))
       (warn "Crossover having trouble with ~A ~A ~A~%" gp x y))
@@ -566,7 +594,7 @@
                                                  :internal y-internal)))
       (when (and (subtypep xi-type yi-expected-type)
                  (subtypep yi-type xi-expected-type))
-        (return-from crossover
+        (return-from crossover-expressions
           (values (change-node-at x xi yin :internal x-internal)
                   (change-node-at y yi xin :internal y-internal)))))))
 
@@ -583,12 +611,6 @@
 (defun find-operator (gp name)
   (or (find name (operators gp) :key #'name)
       (error "Operator ~S is undefined." name)))
-
-(defun mutate (gp x)
-  (let* ((xs (count-nodes x))
-         (xi (random xs))
-         (type (node-expected-type gp x xi)))
-    (change-node-at x xi (funcall (randomizer gp) gp type (node-at x xi)))))
 
 (defun hold-tournament (fitnesses &key select-contestant-fn n-contestants)
   "Select N-CONTESTANTS (all different) for the tournament randomly,
