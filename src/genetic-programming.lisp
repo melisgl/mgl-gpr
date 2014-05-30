@@ -342,7 +342,18 @@
     the evaluator just calls EVAL, or COMPILE + FUNCALL, and compares
     the result to some gold standard. It is also typical to slightly
     penalize solution with too many nodes to control complexity and
-    evaluation cost (see COUNT-NODES).")
+    evaluation cost (see COUNT-NODES). Alternatively, one can specify
+    MASS-EVALUATOR instead.")
+   (mass-evaluator
+    :initform nil
+    :initarg :mass-evaluator
+    :reader mass-evaluator
+    :documentation "NIL or a function of three arguments: the GP
+    object, the population vector and the fitness vector into which
+    the fitnesses of the individuals in the population vector shall be
+    written. By specifying MASS-EVALUATOR instead of an EVALUATOR, one
+    can, for example, distribute costly evaluations over multiple
+    threads. MASS-EVALUATOR has precedence over EVALUATOR.")
    (randomizer
     :initarg :randomizer
     :reader randomizer
@@ -415,7 +426,7 @@
     :accessor nursery)
    ;; The fitness values of each individual in POPULATION.
    (fitnesses
-    :initform (make-array 0 :adjustable t :fill-pointer t)
+    :initform (make-array 0)
     :accessor fitnesses))
   (:documentation "The GP class defines the search space, how mutation
   and recombination occur, and hold various parameters of the
@@ -450,6 +461,7 @@
   (literals (reader gp))
   (toplevel-type (reader gp))
   (evaluator (reader gp))
+  (mass-evaluator (reader gp))
   (count-nodes function))
 
 (defsection @gpr-reproduction (:title "Reproduction")
@@ -478,19 +490,25 @@
 (defun calculate-fitnesses (gp)
   (let ((fitnesses (fitnesses gp))
         (evaluator (evaluator gp))
+        (mass-evaluator (mass-evaluator gp))
         (population (population gp))
         (fittest (fittest gp))
         (changedp nil))
-    (setf (fill-pointer fitnesses) 0)
-    (loop for i below (length population)
-          do (let* ((individual (aref population i))
-                    (fitness (funcall evaluator gp individual)))
-               (vector-push-extend fitness fitnesses)
-               (when (or (null fittest)
-                         (< (cdr fittest) fitness))
-                 (setq fittest (cons individual fitness))
-                 (setf (slot-value gp 'fittest) fittest)
-                 (setq changedp t))))
+    (unless (= (length fitnesses) (length population))
+      (setq fitnesses (make-array (length population)))
+      (setf (slot-value gp 'fitnesses) fitnesses))
+    (if mass-evaluator
+        (funcall mass-evaluator gp population fitnesses)
+        (map-into fitnesses (lambda (individual)
+                              (funcall evaluator gp individual))
+                  population))
+    (loop for individual across population
+          for fitness across fitnesses
+          do (when (or (null fittest)
+                       (< (cdr fittest) fitness))
+               (setq fittest (cons individual fitness))
+               (setf (slot-value gp 'fittest) fittest)
+               (setq changedp t)))
     (when (and changedp (fittest-changed-fn gp))
       (funcall (fittest-changed-fn gp) gp
                (car (fittest gp)) (cdr (fittest gp))))))

@@ -446,7 +446,21 @@ individual. It must return the fitness of the individual. Often,
 the evaluator just calls <code>EVAL</code>, or <code>COMPILE</code> + <code>FUNCALL</code>, and compares
 the result to some gold standard. It is also typical to slightly
 penalize solution with too many nodes to control complexity and
-evaluation cost (see <a href="#x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29" title="(MGL-GPR:COUNT-NODES FUNCTION)"><code>COUNT-NODES</code></a>).</p></li>
+evaluation cost (see <a href="#x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29" title="(MGL-GPR:COUNT-NODES FUNCTION)"><code>COUNT-NODES</code></a>). Alternatively, one can specify
+<a href="#x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>MASS-EVALUATOR</code></a> instead.</p></li>
+</ul>
+
+<p><a name='x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>MASS-EVALUATOR</strong> <em>GP</em></p>
+
+<p><code>NIL</code> or a function of three arguments: the <a href="#x-28MGL-GPR-3AGP-20CLASS-29" title="(MGL-GPR:GP CLASS)"><code>GP</code></a>
+object, the population vector and the fitness vector into which
+the fitnesses of the individuals in the population vector shall be
+written. By specifying <a href="#x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>MASS-EVALUATOR</code></a> instead of an <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>EVALUATOR</code></a>, one
+can, for example, distribute costly evaluations over multiple
+threads. <a href="#x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>MASS-EVALUATOR</code></a> has precedence over <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>EVALUATOR</code></a>.</p></li>
 </ul>
 
 <p><a name='x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29'></a></p>

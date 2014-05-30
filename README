@@ -322,7 +322,17 @@ function acts as the guiding light.
     the evaluator just calls EVAL, or COMPILE + FUNCALL, and compares
     the result to some gold standard. It is also typical to slightly
     penalize solution with too many nodes to control complexity and
-    evaluation cost (see COUNT-NODES).
+    evaluation cost (see COUNT-NODES). Alternatively, one can specify
+    MASS-EVALUATOR instead.
+
+- [reader] MASS-EVALUATOR GP
+
+    NIL or a function of three arguments: the GP
+    object, the population vector and the fitness vector into which
+    the fitnesses of the individuals in the population vector shall be
+    written. By specifying MASS-EVALUATOR instead of an EVALUATOR, one
+    can, for example, distribute costly evaluations over multiple
+    threads. MASS-EVALUATOR has precedence over EVALUATOR.
 
 - [function] COUNT-NODES TREE &KEY INTERNAL
 

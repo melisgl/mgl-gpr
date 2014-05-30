@@ -386,7 +386,19 @@ function acts as the guiding light.
     the evaluator just calls `EVAL`, or `COMPILE` + `FUNCALL`, and compares
     the result to some gold standard. It is also typical to slightly
     penalize solution with too many nodes to control complexity and
-    evaluation cost (see [`COUNT-NODES`][63d7]).
+    evaluation cost (see [`COUNT-NODES`][63d7]). Alternatively, one can specify
+    [`MASS-EVALUATOR`][b8e2] instead.
+
+<a name='x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29'></a>
+
+- [reader] **MASS-EVALUATOR** *GP*
+
+    `NIL` or a function of three arguments: the [`GP`][8f13]
+    object, the population vector and the fitness vector into which
+    the fitnesses of the individuals in the population vector shall be
+    written. By specifying [`MASS-EVALUATOR`][b8e2] instead of an [`EVALUATOR`][9262], one
+    can, for example, distribute costly evaluations over multiple
+    threads. [`MASS-EVALUATOR`][b8e2] has precedence over [`EVALUATOR`][9262].
 
 <a name='x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29'></a>
 
@@ -524,8 +536,10 @@ which individuals live.
   [8bb2]: #x-28MGL-GPR-3ABUILDER-20-28MGL-PAX-3AREADER-20MGL-GPR-3ALITERAL-29-29 "(MGL-GPR:BUILDER (MGL-PAX:READER MGL-GPR:LITERAL))"
   [8d6c]: #x-28MGL-GPR-3A-40GPR-SEARCH-SPACE-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-SEARCH-SPACE MGL-PAX:SECTION)"
   [8f13]: #x-28MGL-GPR-3AGP-20CLASS-29 "(MGL-GPR:GP CLASS)"
+  [9262]: #x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29 "(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"
   [b568]: #x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29 "(MGL-GPR:WEIGHT (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"
   [b6e1]: #x-28MGL-GPR-3A-40GPR-INDIVIDUALS-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-INDIVIDUALS MGL-PAX:SECTION)"
+  [b8e2]: #x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29 "(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"
   [cb67]: #x-28MGL-GPR-3AARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29 "(MGL-GPR:ARGUMENT-TYPES (MGL-PAX:READER MGL-GPR:OPERATOR))"
   [d1ea]: #x-28MGL-GPR-3ALITERAL-20MGL-PAX-3AMACRO-29 "(MGL-GPR:LITERAL MGL-PAX:MACRO)"
   [d34a]: #x-28MGL-GPR-3ARANDOMIZER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29 "(MGL-GPR:RANDOMIZER (MGL-PAX:READER MGL-GPR:GP))"
