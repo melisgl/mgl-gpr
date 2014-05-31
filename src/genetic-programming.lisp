@@ -551,7 +551,7 @@
         (fitnesses (fitnesses gp)))
     (let* ((xi (funcall selector gp fitnesses))
            (x (aref population xi)))
-      (vector-push-extend (mutate gp x) nursery))))
+      (vector-push-extend (mutate-expression gp x) nursery))))
 
 (defun crossover-some (gp population nursery)
   (let ((n (population-size gp))
@@ -560,7 +560,7 @@
     (let* ((xi (funcall selector gp fitnesses))
            (x (aref population xi)))
       (let ((y (aref population (funcall selector gp fitnesses))))
-        (multiple-value-bind (a b) (crossover gp x y)
+        (multiple-value-bind (a b) (crossover-expressions gp x y)
           (vector-push-extend a nursery)
           (when (< (length nursery) n)
             (vector-push-extend b nursery)))))))
