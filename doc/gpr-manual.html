@@ -448,7 +448,7 @@ representation of the problem, the operators and the literals.</p></li>
 individual. It must return the fitness of the individual. Often,
 the evaluator just calls <code>EVAL</code>, or <code>COMPILE</code> + <code>FUNCALL</code>, and compares
 the result to some gold standard. It is also typical to slightly
-penalize solution with too many nodes to control complexity and
+penalize solutions with too many nodes to control complexity and
 evaluation cost (see <a href="#x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29" title="(MGL-GPR:COUNT-NODES FUNCTION)"><code>COUNT-NODES</code></a>). Alternatively, one can specify
 <a href="#x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>MASS-EVALUATOR</code></a> instead.</p></li>
 </ul>
@@ -464,6 +464,23 @@ the fitnesses of the individuals in the population vector shall be
 written. By specifying <a href="#x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>MASS-EVALUATOR</code></a> instead of an <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>EVALUATOR</code></a>, one
 can, for example, distribute costly evaluations over multiple
 threads. <a href="#x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>MASS-EVALUATOR</code></a> has precedence over <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>EVALUATOR</code></a>.</p></li>
+</ul>
+
+<p><a name='x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29'></a></p>
+
+<ul>
+<li><p>[reader] <strong>FITNESS-KEY</strong> <em>GP</em></p>
+
+<p>A function that returns a real number for an
+object returned by <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>EVALUATOR</code></a>. It is used in the implementation of
+REPORT-FITTEST and <a href="#x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:KEEP-FITTEST-P (MGL-PAX:ACCESSOR MGL-GPR:GP))"><code>KEEP-FITTEST-P</code></a>. The default value is #'<code>IDENTITY</code>
+which is sufficient when <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"><code>EVALUATOR</code></a> returns real numbers. However,
+sometimes the evaluator returns more information about the
+solution (such as fitness in various situations) and <a href="#x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:FITNESS-KEY (MGL-PAX:READER MGL-GPR:GP))"><code>FITNESS-KEY</code></a>
+key be used to select the fitness value. A typical use is to
+measure fitness on the entire training data and on a random subset
+of it. <a href="#x-28MGL-GPR-3ASELECTOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:SELECTOR (MGL-PAX:READER MGL-GPR:GP))"><code>SELECTOR</code></a> will use the fitness on the random subset, but
+REPORT-FITTEST and <a href="#x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29" title="(MGL-GPR:KEEP-FITTEST-P (MGL-PAX:ACCESSOR MGL-GPR:GP))"><code>KEEP-FITTEST-P</code></a> will use the global fitness.</p></li>
 </ul>
 
 <p><a name='x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29'></a></p>
@@ -508,7 +525,7 @@ Typically, this defers to <a href="#x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29"
 <p><a name='x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29'></a></p>
 
 <ul>
-<li><p>[function] <strong>HOLD-TOURNAMENT</strong> <em>FITNESSES &amp;KEY SELECT-CONTESTANT-FN N-CONTESTANTS</em></p>
+<li><p>[function] <strong>HOLD-TOURNAMENT</strong> <em>FITNESSES &amp;KEY SELECT-CONTESTANT-FN N-CONTESTANTS KEY</em></p>
 
 <p>Select <code>N-CONTESTANTS</code> (all different) for the tournament randomly,
 represented by indices into <code>FITNESSES</code> and return the one with the
@@ -517,7 +534,9 @@ selected randomly with uniform probability. If <code>SELECT-CONTESTANT-FN</code>
 is a function, then it's called with <code>FITNESSES</code> to return an
 index (that may or may not be already selected for the tournament).
 Specifying <code>SELECT-CONTESTANT-FN</code> allows one to conduct 'local'
-tournaments biased towards a particular region of the index range.</p></li>
+tournaments biased towards a particular region of the index range.
+<code>KEY</code> is <code>NIL</code> or a function that select the real fitness value from
+elements of <code>FITNESSES</code>.</p></li>
 </ul>
 
 <p><a name='x-28MGL-GPR-3A-40GPR-ENVIRONMENT-20MGL-PAX-3ASECTION-29'></a></p>

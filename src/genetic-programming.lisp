@@ -344,7 +344,7 @@
     individual. It must return the fitness of the individual. Often,
     the evaluator just calls EVAL, or COMPILE + FUNCALL, and compares
     the result to some gold standard. It is also typical to slightly
-    penalize solution with too many nodes to control complexity and
+    penalize solutions with too many nodes to control complexity and
     evaluation cost (see COUNT-NODES). Alternatively, one can specify
     MASS-EVALUATOR instead.")
    (mass-evaluator
@@ -357,6 +357,20 @@
     written. By specifying MASS-EVALUATOR instead of an EVALUATOR, one
     can, for example, distribute costly evaluations over multiple
     threads. MASS-EVALUATOR has precedence over EVALUATOR.")
+   (fitness-key
+    :initform #'identity
+    :initarg :fitness-key
+    :reader fitness-key
+    :documentation "A function that returns a real number for an
+    object returned by EVALUATOR. It is used in the implementation of
+    REPORT-FITTEST and KEEP-FITTEST-P. The default value is #'IDENTITY
+    which is sufficient when EVALUATOR returns real numbers. However,
+    sometimes the evaluator returns more information about the
+    solution (such as fitness in various situations) and FITNESS-KEY
+    key be used to select the fitness value. A typical use is to
+    measure fitness on the entire training data and on a random subset
+    of it. SELECTOR will use the fitness on the random subset, but
+    REPORT-FITTEST and KEEP-FITTEST-P will use the global fitness.")
    (randomizer
     :initarg :randomizer
     :reader randomizer
@@ -464,6 +478,7 @@
   (toplevel-type (reader gp))
   (evaluator (reader gp))
   (mass-evaluator (reader gp))
+  (fitness-key (reader gp))
   (count-nodes function))
 
 (defsection @gpr-reproduction (:title "Reproduction")
@@ -500,10 +515,12 @@
         (mass-evaluator (mass-evaluator gp))
         (population (population gp))
         (fittest (fittest gp))
-        (changedp nil))
+        (changedp nil)
+        (fitness-key (fitness-key gp)))
     (unless (= (length fitnesses) (length population))
       (setq fitnesses (make-array (length population)))
       (setf (slot-value gp 'fitnesses) fitnesses))
+    (fill fitnesses nil)
     (if mass-evaluator
         (funcall mass-evaluator gp population fitnesses)
         (map-into fitnesses (lambda (individual)
@@ -511,11 +528,13 @@
                   population))
     (loop for individual across population
           for fitness across fitnesses
-          do (when (or (null fittest)
-                       (< (cdr fittest) fitness))
-               (setq fittest (cons individual fitness))
-               (setf (slot-value gp 'fittest) fittest)
-               (setq changedp t)))
+          do (let ((real-fitness (funcall fitness-key fitness)))
+               (when (or (null fittest)
+                         (< (funcall fitness-key (cdr fittest))
+                            real-fitness))
+                 (setq fittest (cons individual fitness))
+                 (setf (slot-value gp 'fittest) fittest)
+                 (setq changedp t))))
     (when (and changedp (fittest-changed-fn gp))
       (funcall (fittest-changed-fn gp) gp
                (car (fittest gp)) (cdr (fittest gp))))))
@@ -528,7 +547,8 @@
          (nursery (nursery gp)))
     (setf (fill-pointer nursery) 0)
     (when (keep-fittest-p gp)
-      (let ((i (nth-value 1 (max-position/vector (fitnesses gp)))))
+      (let ((i (nth-value 1 (max-position/vector (fitnesses gp)
+                                                 :key (fitness-key gp)))))
         (vector-push-extend (aref population i) nursery)))
     (loop while (< (length nursery) n) do
       (let* ((what (random 1.0)))
@@ -612,7 +632,7 @@
   (or (find name (operators gp) :key #'name)
       (error "Operator ~S is undefined." name)))
 
-(defun hold-tournament (fitnesses &key select-contestant-fn n-contestants)
+(defun hold-tournament (fitnesses &key select-contestant-fn n-contestants key)
   "Select N-CONTESTANTS (all different) for the tournament randomly,
   represented by indices into FITNESSES and return the one with the
   highest fitness. If SELECT-CONTESTANT-FN is NIL then contestants are
@@ -620,17 +640,21 @@
   is a function, then it's called with FITNESSES to return an
   index (that may or may not be already selected for the tournament).
   Specifying SELECT-CONTESTANT-FN allows one to conduct 'local'
-  tournaments biased towards a particular region of the index range."
+  tournaments biased towards a particular region of the index range.
+  KEY is NIL or a function that select the real fitness value from
+  elements of FITNESSES."
   (let* ((n (length fitnesses))
          (size (min n-contestants n))
-         (v (make-array size :adjustable t :fill-pointer 0)))
+         (v (make-array size :adjustable t :fill-pointer 0))
+         (key (or key #'identity)))
     (loop while (< (length v) size) do
       (let ((i (if select-contestant-fn
                    (funcall select-contestant-fn fitnesses)
                    (random n))))
         (unless (find i v)
-          (insert-into-sorted-vector i v
-                                     :test (lambda (x y)
-                                             (> (aref fitnesses x)
-                                                (aref fitnesses y)))))))
+          (insert-into-sorted-vector
+           i v
+           :test (lambda (x y)
+                   (> (funcall key (aref fitnesses x))
+                      (funcall key (aref fitnesses y))))))))
     (aref v 0)))

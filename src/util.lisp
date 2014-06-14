@@ -1,15 +1,19 @@
 (in-package :mgl-gpr)
 
-(defun max-position/vector (vector &key (test #'<))
+(defun max-position/vector (vector &key (test #'<) key)
   "Return the maximum value (according to TEST) in VECTOR and its index."
   (let ((has-max-p nil)
-        max pos)
+        max
+        pos)
     (dotimes (i (length vector) (values max pos))
-      (when (or (not has-max-p)
-                (funcall test max (aref vector i)))
-        (setq has-max-p t
-              max (aref vector i)
-              pos i)))))
+      (let ((x (if key
+                   (funcall key (aref vector i))
+                   (aref vector i))))
+        (when (or (not has-max-p)
+                  (funcall test max x))
+          (setq has-max-p t
+                max x
+                pos i))))))
 
 (defun insert-into-sorted-vector (item vec &key
                                   (max-length (array-total-size vec))

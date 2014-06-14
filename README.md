@@ -387,7 +387,7 @@ function acts as the guiding light.
     individual. It must return the fitness of the individual. Often,
     the evaluator just calls `EVAL`, or `COMPILE` + `FUNCALL`, and compares
     the result to some gold standard. It is also typical to slightly
-    penalize solution with too many nodes to control complexity and
+    penalize solutions with too many nodes to control complexity and
     evaluation cost (see [`COUNT-NODES`][63d7]). Alternatively, one can specify
     [`MASS-EVALUATOR`][b8e2] instead.
 
@@ -401,6 +401,21 @@ function acts as the guiding light.
     written. By specifying [`MASS-EVALUATOR`][b8e2] instead of an [`EVALUATOR`][9262], one
     can, for example, distribute costly evaluations over multiple
     threads. [`MASS-EVALUATOR`][b8e2] has precedence over [`EVALUATOR`][9262].
+
+<a name='x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29'></a>
+
+- [reader] **FITNESS-KEY** *GP*
+
+    A function that returns a real number for an
+    object returned by [`EVALUATOR`][9262]. It is used in the implementation of
+    REPORT-FITTEST and [`KEEP-FITTEST-P`][b807]. The default value is #'`IDENTITY`
+    which is sufficient when [`EVALUATOR`][9262] returns real numbers. However,
+    sometimes the evaluator returns more information about the
+    solution (such as fitness in various situations) and [`FITNESS-KEY`][5a3f]
+    key be used to select the fitness value. A typical use is to
+    measure fitness on the entire training data and on a random subset
+    of it. [`SELECTOR`][17d6] will use the fitness on the random subset, but
+    REPORT-FITTEST and [`KEEP-FITTEST-P`][b807] will use the global fitness.
 
 <a name='x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29'></a>
 
@@ -437,7 +452,7 @@ recombination occur.
 
 <a name='x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29'></a>
 
-- [function] **HOLD-TOURNAMENT** *FITNESSES &KEY SELECT-CONTESTANT-FN N-CONTESTANTS*
+- [function] **HOLD-TOURNAMENT** *FITNESSES &KEY SELECT-CONTESTANT-FN N-CONTESTANTS KEY*
 
     Select `N-CONTESTANTS` (all different) for the tournament randomly,
     represented by indices into `FITNESSES` and return the one with the
@@ -447,6 +462,8 @@ recombination occur.
     index (that may or may not be already selected for the tournament).
     Specifying `SELECT-CONTESTANT-FN` allows one to conduct 'local'
     tournaments biased towards a particular region of the index range.
+    `KEY` is `NIL` or a function that select the real fitness value from
+    elements of `FITNESSES`.
 
 <a name='x-28MGL-GPR-3A-40GPR-ENVIRONMENT-20MGL-PAX-3ASECTION-29'></a>
 
@@ -536,6 +553,7 @@ take place.
   [2af3]: #x-28MGL-GPR-3AEXPRESSION-CLASS-20CLASS-29 "(MGL-GPR:EXPRESSION-CLASS CLASS)"
   [3071]: #x-28MGL-GPR-3ANAME-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29 "(MGL-GPR:NAME (MGL-PAX:READER MGL-GPR:OPERATOR))"
   [464d]: #x-28MGL-GPR-3APOPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29 "(MGL-GPR:POPULATION-SIZE (MGL-PAX:ACCESSOR MGL-GPR:GP))"
+  [5a3f]: #x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29 "(MGL-GPR:FITNESS-KEY (MGL-PAX:READER MGL-GPR:GP))"
   [5af0]: #x-28MGL-GPR-3ALITERAL-20CLASS-29 "(MGL-GPR:LITERAL CLASS)"
   [6028]: #x-28MGL-GPR-3A-40GPR-REPRODUCTION-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-REPRODUCTION MGL-PAX:SECTION)"
   [61ed]: #x-28MGL-GPR-3A-40GPR-BASICS-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-BASICS MGL-PAX:SECTION)"
@@ -548,6 +566,7 @@ take place.
   [9262]: #x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29 "(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"
   [b568]: #x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29 "(MGL-GPR:WEIGHT (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"
   [b6e1]: #x-28MGL-GPR-3A-40GPR-INDIVIDUALS-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-INDIVIDUALS MGL-PAX:SECTION)"
+  [b807]: #x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGP-29-29 "(MGL-GPR:KEEP-FITTEST-P (MGL-PAX:ACCESSOR MGL-GPR:GP))"
   [b8e2]: #x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGP-29-29 "(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:GP))"
   [cb67]: #x-28MGL-GPR-3AARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29 "(MGL-GPR:ARGUMENT-TYPES (MGL-PAX:READER MGL-GPR:OPERATOR))"
   [d1ea]: #x-28MGL-GPR-3ALITERAL-20MGL-PAX-3AMACRO-29 "(MGL-GPR:LITERAL MGL-PAX:MACRO)"

@@ -323,7 +323,7 @@ function acts as the guiding light.
     individual. It must return the fitness of the individual. Often,
     the evaluator just calls EVAL, or COMPILE + FUNCALL, and compares
     the result to some gold standard. It is also typical to slightly
-    penalize solution with too many nodes to control complexity and
+    penalize solutions with too many nodes to control complexity and
     evaluation cost (see COUNT-NODES). Alternatively, one can specify
     MASS-EVALUATOR instead.
 
@@ -335,6 +335,19 @@ function acts as the guiding light.
     written. By specifying MASS-EVALUATOR instead of an EVALUATOR, one
     can, for example, distribute costly evaluations over multiple
     threads. MASS-EVALUATOR has precedence over EVALUATOR.
+
+- [reader] FITNESS-KEY GP
+
+    A function that returns a real number for an
+    object returned by EVALUATOR. It is used in the implementation of
+    REPORT-FITTEST and KEEP-FITTEST-P. The default value is #'IDENTITY
+    which is sufficient when EVALUATOR returns real numbers. However,
+    sometimes the evaluator returns more information about the
+    solution (such as fitness in various situations) and FITNESS-KEY
+    key be used to select the fitness value. A typical use is to
+    measure fitness on the entire training data and on a random subset
+    of it. SELECTOR will use the fitness on the random subset, but
+    REPORT-FITTEST and KEEP-FITTEST-P will use the global fitness.
 
 - [function] COUNT-NODES TREE &KEY INTERNAL
 
@@ -361,7 +374,7 @@ recombination occur.
     selected for reproduction be it copying, mutation or crossover.
     Typically, this defers to HOLD-TOURNAMENT.
 
-- [function] HOLD-TOURNAMENT FITNESSES &KEY SELECT-CONTESTANT-FN N-CONTESTANTS
+- [function] HOLD-TOURNAMENT FITNESSES &KEY SELECT-CONTESTANT-FN N-CONTESTANTS KEY
 
     Select N-CONTESTANTS (all different) for the tournament randomly,
     represented by indices into FITNESSES and return the one with the
@@ -371,6 +384,8 @@ recombination occur.
     index (that may or may not be already selected for the tournament).
     Specifying SELECT-CONTESTANT-FN allows one to conduct 'local'
     tournaments biased towards a particular region of the index range.
+    KEY is NIL or a function that select the real fitness value from
+    elements of FITNESSES.
 
 ## Environment
 
