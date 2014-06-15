@@ -1,17 +1,15 @@
 (in-package :mgl-gpr)
 
-(defsection @gpr-manual (:title "GPR Manual")
-  (mgl-gpr asdf:system)
-  (@gpr-background section)
-  (@gpr-tutorial section)
-  (@gpr-expressions section)
-  (@gpr-basics section)
-  (@gpr-search-space section)
-  (@gpr-reproduction section)
-  (@gpr-environment section)
-  (@gpr-individuals section))
+(defsection @gpr-gp (:title "Genetic Programming")
+  (@gpr-gp-background section)
+  (@gpr-gp-tutorial section)
+  (@gpr-gp-expressions section)
+  (@gpr-gp-basics section)
+  (@gpr-gp-search-space section)
+  (@gpr-gp-reproduction section)
+  (@gpr-gp-environment section))
 
-(defsection @gpr-background (:title "Background")
+(defsection @gpr-gp-background (:title "Background")
   "What is Genetic Programming? This is what Wikipedia has to say:
 
   > In artificial intelligence, genetic programming (GP) is an
@@ -27,19 +25,9 @@
 
   Lisp has a long history of Genetic Programming because \\GP involves
   manipulation of expressions which is of course particularly easy
-  with sexps.
+  with sexps.")
 
-  \\GP is quick to get up and running, can produce good results across
-  a wild variety of domains, but it needs quite a bit of fiddling to
-  perform well and domain specific approaches will almost always have
-  better results. All in all, \\GP can be very useful to cut down on
-  the tedium of human trial and error.
-
-  I originally wrote this library while working for Ravenpack who
-  agreed to release it under an MIT licence. Several years later I
-  cleaned it up, and documented it. Enjoy.")
-
-(defsection @gpr-tutorial (:title "Tutorial")
+(defsection @gpr-gp-tutorial (:title "Tutorial")
   "GPR works with typed expressions. Mutation and crossover never
   produce expressions that fail with a type error. Let's define a
   couple of operators that work with real numbers and also return a
@@ -148,7 +136,7 @@
   Note that this example can be found in
   example/symbolic-regression.lisp.")
 
-(defsection @gpr-expressions (:title "Expressions")
+(defsection @gpr-gp-expressions (:title "Expressions")
   "Genetic programming works with a population of individuals. The
   individuals are sexps that may be evaluated directly by EVAL or by
   other means. The internal nodes and the leafs of the sexp as a tree
@@ -308,16 +296,15 @@
     (random-operator-or-literal type 0)))
 
 
-(defsection @gpr-basics (:title "Basics")
+(defsection @gpr-gp-basics (:title "Basics")
   "To start the evolutionary process one creates a GP object,
-  adds to it the individuals that make up the initial population and
-  calls ADVANCE in a loop to move on to the next generation."
-  (gp class)
-  (add-individual function)
-  (random-gp-expression function)
-  (advance function))
+  adds to it the individuals (see ADD-INDIVIDUAL) that make up the
+  initial population and calls ADVANCE in a loop to move on to the
+  next generation."
+  (genetic-programming class)
+  (random-gp-expression function))
 
-(defclass gp ()
+(defclass genetic-programming (evolutionary-algorithm)
   ((operators
     :initarg :operators
     :reader operators
@@ -337,40 +324,6 @@
     may be the symbol REAL. If the problem is to find the shortest
     route, then this may be a vector. It all depends on the
     representation of the problem, the operators and the literals.")
-   (evaluator
-    :initarg :evaluator
-    :reader evaluator
-    :documentation "A function of two arguments: the GP object and the
-    individual. It must return the fitness of the individual. Often,
-    the evaluator just calls EVAL, or COMPILE + FUNCALL, and compares
-    the result to some gold standard. It is also typical to slightly
-    penalize solutions with too many nodes to control complexity and
-    evaluation cost (see COUNT-NODES). Alternatively, one can specify
-    MASS-EVALUATOR instead.")
-   (mass-evaluator
-    :initform nil
-    :initarg :mass-evaluator
-    :reader mass-evaluator
-    :documentation "NIL or a function of three arguments: the GP
-    object, the population vector and the fitness vector into which
-    the fitnesses of the individuals in the population vector shall be
-    written. By specifying MASS-EVALUATOR instead of an EVALUATOR, one
-    can, for example, distribute costly evaluations over multiple
-    threads. MASS-EVALUATOR has precedence over EVALUATOR.")
-   (fitness-key
-    :initform #'identity
-    :initarg :fitness-key
-    :reader fitness-key
-    :documentation "A function that returns a real number for an
-    object returned by EVALUATOR. It is used in the implementation of
-    REPORT-FITTEST and KEEP-FITTEST-P. The default value is #'IDENTITY
-    which is sufficient when EVALUATOR returns real numbers. However,
-    sometimes the evaluator returns more information about the
-    solution (such as fitness in various situations) and FITNESS-KEY
-    key be used to select the fitness value. A typical use is to
-    measure fitness on the entire training data and on a random subset
-    of it. SELECTOR will use the fitness on the random subset, but
-    REPORT-FITTEST and KEEP-FITTEST-P will use the global fitness.")
    (randomizer
     :initarg :randomizer
     :reader randomizer
@@ -386,17 +339,6 @@
     vector. The individual whose fitness was thus selected will be
     selected for reproduction be it copying, mutation or crossover.
     Typically, this defers to HOLD-TOURNAMENT.")
-   (generation-counter
-    :initform 0
-    :reader generation-counter
-    :documentation "A counter that starts from 0 and is incremented by
-    ADVANCE. All accessors of GP are allowed to be specialized on a
-    subclass of GP which allows them to be functions of
-    GENERATION-COUNTER.")
-   (population-size
-    :initarg :population-size
-    :accessor population-size
-    :documentation "The number of individuals in a generation.")
    (copy-chance
     :initform 0
     :initarg :copy-chance
@@ -417,42 +359,11 @@
     :accessor keep-fittest-p
     :documentation "If true, then the fittest individual is always
     copied without mutation to the next generation. Of course, it may
-    also have other offsprings.")
-   (fittest
-    :initform nil
-    :reader fittest
-    :documentation "The fittest individual ever to be seen by this GP
-    and its fittness as a cons cell.")
-   (fittest-changed-fn
-    :initform nil
-    :initarg :fittest-changed-fn
-    :accessor fittest-changed-fn
-    :documentation "If non-NIL, a function that's called when FITTEST
-    is updated with three arguments: the GP object, the fittest
-    individual and its fitness. Useful for tracking progress.")
-   (population
-    :initform (make-array 0 :adjustable 0 :fill-pointer t)
-    :accessor population
-    :documentation "An adjustable array with a fill-pointer that holds
-    the individuals that make up the population.")
-   ;; This is where newborns are temporarily stored, before it is
-   ;; swapped with POPULATION.
-   (nursery
-    :initform (make-array 0 :adjustable 0 :fill-pointer t)
-    :accessor nursery)
-   ;; The fitness values of each individual in POPULATION.
-   (fitnesses
-    :initform (make-array 0)
-    :accessor fitnesses))
-  (:documentation "The GP class defines the search space, how mutation
-  and recombination occur, and hold various parameters of the
-  evolutionary process and the individuals themselves."))
-
-(defun add-individual (gp individual)
-  "Adds INDIVIDUAL to POPULATION of GP. Usually called to initialize
-  the GP, but it is also allowed to add individuals (or change
-  POPULATION in any way) in between calls to ADVANCE."
-  (vector-push-extend individual (population gp)))
+    also have other offsprings."))
+  (:documentation "The GENETIC-PROGRAMMING class defines the search
+  space, how mutation and recombination occur, and hold various
+  parameters of the evolutionary process and the individuals
+  themselves."))
 
 (defun random-gp-expression (gp terminate-fn &key (type (toplevel-type gp)))
   "Creating the initial population by hand is tedious. This
@@ -462,50 +373,37 @@
   expression which is useful in a RANDOMIZER function."
   (random-expression (operators gp) (literals gp) type terminate-fn))
 
-(defun advance (gp)
-  "Create the next generation and place it in POPULATION."
+(defmethod advance ((gp genetic-programming))
   (calculate-fitnesses gp)
   (incf (slot-value gp 'generation-counter))
   (breed gp)
   (rotatef (population gp) (nursery gp)))
 
-(defsection @gpr-search-space (:title "Search Space")
+(defsection @gpr-gp-search-space (:title "Search Space")
   "The search space of the GP is defined by the available operators,
   literals and the type of the final result produced. The evaluator
   function acts as the guiding light."
-  (operators (reader gp))
-  (literals (reader gp))
-  (toplevel-type (reader gp))
-  (evaluator (reader gp))
-  (mass-evaluator (reader gp))
-  (fitness-key (reader gp))
+  (operators (reader genetic-programming))
+  (literals (reader genetic-programming))
+  (toplevel-type (reader genetic-programming))
   (count-nodes function))
 
-(defsection @gpr-reproduction (:title "Reproduction")
+(defsection @gpr-gp-reproduction (:title "Reproduction")
   "The RANDOMIZER and SELECTOR functions define how mutation and
   recombination occur."
-  (randomizer (reader gp))
-  (selector (reader gp))
+  (randomizer (reader genetic-programming))
+  (selector (reader genetic-programming))
   (hold-tournament function))
 
-(defsection @gpr-environment (:title "Environment")
-  "The following are just various knobs to control the environment in
-  which individuals live."
-  (generation-counter (reader gp))
-  (population-size (accessor gp))
+(defsection @gpr-gp-environment (:title "Environment")
   "The new generation is created by applying a reproduction operator
   until POPULATION-SIZE is reached in the new generation. At each
   step, a reproduction operator is randomly chosen."
-  (copy-chance (accessor gp))
-  (mutation-chance (accessor gp))
+  (copy-chance (accessor genetic-programming))
+  (mutation-chance (accessor genetic-programming))
   "If neither copying nor mutation were chosen, then a crossover will
   take place."
-  (keep-fittest-p (accessor gp)))
-
-(defsection @gpr-individuals (:title "Individuals")
-  (population (accessor gp))
-  (fittest (reader gp))
-  (fittest-changed-fn (accessor gp)))
+  (keep-fittest-p (accessor genetic-programming)))
 
 ;;; Calculate the fitnesses of the current generation. Place them into
 ;;; FITNESSES. Update FITTEST if necessary.
@@ -540,6 +438,9 @@
                (car (fittest gp)) (cdr (fittest gp))))))
 
 (defun breed (gp)
+  (when (null (nursery gp))
+    (setf (slot-value gp 'nursery)
+          (make-array 0 :adjustable 0 :fill-pointer t)))
   (let* ((population (population gp))
          (n (population-size gp))
          (copy-chance (copy-chance gp))

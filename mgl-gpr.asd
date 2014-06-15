@@ -7,16 +7,18 @@
   :author "Gábor Melis"
   :mailto "mega@retes.hu"
   :homepage "http://quotenil.com"
-  :description "MGL-GPR is a library for genetic programming: evolving
-  typed expressions for a particular purpose from a set of operators
-  and constants."
-  :depends-on (#:mgl-pax)
+  :description "MGL-GPR is a library of evolutionary algorithms such
+  as Genetic Programming (evolving typed expressions from a set of
+  operators and constants) and Differential Evolution."
+  :depends-on (#:cl-random #:mgl-pax)
   :components ((:module "src"
                 :serial t
                 :components ((:file "package")
+                             (:file "evolutionary-algorithm")
                              (:file "util")
                              (:file "tree")
-                             (:file "genetic-programming")))))
+                             (:file "genetic-programming")
+                             (:file "differential-evolution")))))
 
 (defmethod asdf:perform ((o asdf:test-op)
                          (c (eql (asdf:find-system '#:mgl-gpr))))

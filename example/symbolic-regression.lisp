@@ -59,7 +59,7 @@
   (let ((*print-length* nil)
         (*print-level* nil)
         (gp (make-instance
-             'gp
+             'genetic-programming
              :toplevel-type 'real
              :operators *operators*
              :literals *literals*

@@ -66,11 +66,11 @@
 (defun test-genetic-programming ()
   (dolist (target-expr (list *test-expr-0* *test-expr-1* *test-expr-2*))
     (let ((gp (make-instance
-               'gp
+               'genetic-programming
                :toplevel-type 'real
                :operators *operators*
                :literals *literals*
-               :population-size 1000
+               :population-size 100
                :copy-chance 0.0
                :mutation-chance 0.5
                :evaluator (lambda (gp expr)
