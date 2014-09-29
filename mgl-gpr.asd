@@ -22,5 +22,5 @@
 
 (defmethod asdf:perform ((o asdf:test-op)
                          (c (eql (asdf:find-system '#:mgl-gpr))))
-  (asdf:oos 'asdf:test-op '#:mgl-gpr-test)
+  (asdf:oos 'asdf:load-op '#:mgl-gpr-test)
   (funcall (intern (symbol-name '#:test) (find-package '#:mgl-gpr))))
