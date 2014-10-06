@@ -122,7 +122,7 @@ slow.</p></li>
 <p><a name='x-28MGL-GPR-3APOPULATION-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29'></a></p>
 
 <ul>
-<li><p>[accessor] <strong>POPULATION</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(&lt;= (MAKE-ARRAY 0 :ADJUSTABLE 0 :FILL-POINTER T))</em></p>
+<li><p>[accessor] <strong>POPULATION</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(= (MAKE-ARRAY 0 :ADJUSTABLE 0 :FILL-POINTER T))</em></p>
 
 <p>An adjustable array with a fill-pointer that holds
 the individuals that make up the population.</p></li>
@@ -131,7 +131,7 @@ the individuals that make up the population.</p></li>
 <p><a name='x-28MGL-GPR-3AGENERATION-COUNTER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>GENERATION-COUNTER</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(&lt;= 0)</em></p>
+<li><p>[reader] <strong>GENERATION-COUNTER</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(= 0)</em></p>
 
 <p>A counter that starts from 0 and is incremented by
 <a href="#x-28MGL-GPR-3AADVANCE-20GENERIC-FUNCTION-29" title="(MGL-GPR:ADVANCE GENERIC-FUNCTION)"><code>ADVANCE</code></a>. All accessors of <a href="#x-28MGL-GPR-3AEVOLUTIONARY-ALGORITHM-20CLASS-29" title="(MGL-GPR:EVOLUTIONARY-ALGORITHM CLASS)"><code>EVOLUTIONARY-ALGORITHM</code></a> are allowed to be
@@ -173,7 +173,7 @@ fitness function may include an L1 or L2 penalty term.</p>
 <p><a name='x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>MASS-EVALUATOR</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(:MASS-EVALUATOR &lt;= NIL)</em></p>
+<li><p>[reader] <strong>MASS-EVALUATOR</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(:MASS-EVALUATOR = NIL)</em></p>
 
 <p><code>NIL</code> or a function of three arguments: the
 <a href="#x-28MGL-GPR-3AEVOLUTIONARY-ALGORITHM-20CLASS-29" title="(MGL-GPR:EVOLUTIONARY-ALGORITHM CLASS)"><code>EVOLUTIONARY-ALGORITHM</code></a> object, the population vector and the
@@ -187,7 +187,7 @@ over <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTI
 <p><a name='x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>FITNESS-KEY</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(:FITNESS-KEY &lt;= #'IDENTITY)</em></p>
+<li><p>[reader] <strong>FITNESS-KEY</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(:FITNESS-KEY = #'IDENTITY)</em></p>
 
 <p>A function that returns a real number for an
 object returned by <a href="#x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29" title="(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:EVOLUTIONARY-ALGORITHM))"><code>EVALUATOR</code></a>. It is called when two fitness are to
@@ -221,7 +221,7 @@ generations or until the <a href="#x-28MGL-GPR-3AFITTEST-20-28MGL-PAX-3AREADER-2
 <p><a name='x-28MGL-GPR-3AFITTEST-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>FITTEST</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(&lt;= NIL)</em></p>
+<li><p>[reader] <strong>FITTEST</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(= NIL)</em></p>
 
 <p>The fittest individual ever to be seen and its
 fittness as a cons cell.</p></li>
@@ -230,7 +230,7 @@ fittness as a cons cell.</p></li>
 <p><a name='x-28MGL-GPR-3AFITTEST-CHANGED-FN-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29'></a></p>
 
 <ul>
-<li><p>[accessor] <strong>FITTEST-CHANGED-FN</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(:FITTEST-CHANGED-FN &lt;= NIL)</em></p>
+<li><p>[accessor] <strong>FITTEST-CHANGED-FN</strong> <em>EVOLUTIONARY-ALGORITHM</em> <em>(:FITTEST-CHANGED-FN = NIL)</em></p>
 
 <p>If non-NIL, a function that's called when <a href="#x-28MGL-GPR-3AFITTEST-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29" title="(MGL-GPR:FITTEST (MGL-PAX:READER MGL-GPR:EVOLUTIONARY-ALGORITHM))"><code>FITTEST</code></a>
 is updated with three arguments: the <a href="#x-28MGL-GPR-3AEVOLUTIONARY-ALGORITHM-20CLASS-29" title="(MGL-GPR:EVOLUTIONARY-ALGORITHM CLASS)"><code>EVOLUTIONARY-ALGORITHM</code></a>
@@ -416,7 +416,7 @@ must evaluate to a value of this lisp type.</p></li>
 <p><a name='x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>WEIGHT</strong> <em>EXPRESSION-CLASS</em> <em>(:WEIGHT &lt;= 1)</em></p>
+<li><p>[reader] <strong>WEIGHT</strong> <em>EXPRESSION-CLASS</em> <em>(:WEIGHT = 1)</em></p>
 
 <p>The probability of an expression class to be
 selected from a set of candidates is proportional to its
@@ -606,7 +606,7 @@ with <a href="#x-28MGL-GPR-3AOPERATOR-20CLASS-29" title="(MGL-GPR:OPERATOR CLASS
 <p><a name='x-28MGL-GPR-3ATOPLEVEL-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>TOPLEVEL-TYPE</strong> <em>GENETIC-PROGRAMMING</em> <em>(:TOPLEVEL-TYPE &lt;= T)</em></p>
+<li><p>[reader] <strong>TOPLEVEL-TYPE</strong> <em>GENETIC-PROGRAMMING</em> <em>(:TOPLEVEL-TYPE = T)</em></p>
 
 <p>The type of the results produced by individuals.
 If the problem is to find the minimum a 1d real function then this
@@ -682,7 +682,7 @@ step, a reproduction operator is randomly chosen.</p>
 <p><a name='x-28MGL-GPR-3ACOPY-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29'></a></p>
 
 <ul>
-<li><p>[accessor] <strong>COPY-CHANCE</strong> <em>GENETIC-PROGRAMMING</em> <em>(:COPY-CHANCE &lt;= 0)</em></p>
+<li><p>[accessor] <strong>COPY-CHANCE</strong> <em>GENETIC-PROGRAMMING</em> <em>(:COPY-CHANCE = 0)</em></p>
 
 <p>The probability of the copying reproduction
 operator being chosen. Copying simply creates an exact copy of a
@@ -692,7 +692,7 @@ single individual.</p></li>
 <p><a name='x-28MGL-GPR-3AMUTATION-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29'></a></p>
 
 <ul>
-<li><p>[accessor] <strong>MUTATION-CHANCE</strong> <em>GENETIC-PROGRAMMING</em> <em>(:MUTATION-CHANCE &lt;= 0)</em></p>
+<li><p>[accessor] <strong>MUTATION-CHANCE</strong> <em>GENETIC-PROGRAMMING</em> <em>(:MUTATION-CHANCE = 0)</em></p>
 
 <p>The probability of the mutation reproduction
 operator being chosen. Mutation creates a randomly altered copy of
@@ -705,7 +705,7 @@ take place.</p>
 <p><a name='x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29'></a></p>
 
 <ul>
-<li><p>[accessor] <strong>KEEP-FITTEST-P</strong> <em>GENETIC-PROGRAMMING</em> <em>(:KEEP-FITTEST-P &lt;= T)</em></p>
+<li><p>[accessor] <strong>KEEP-FITTEST-P</strong> <em>GENETIC-PROGRAMMING</em> <em>(:KEEP-FITTEST-P = T)</em></p>
 
 <p>If true, then the fittest individual is always
 copied without mutation to the next generation. Of course, it may
@@ -734,7 +734,7 @@ individuals.</p></li>
 <p><a name='x-28MGL-GPR-3AMAP-WEIGHTS-INTO-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>MAP-WEIGHTS-INTO-FN</strong> <em>DIFFERENTIAL-EVOLUTION</em> <em>(:MAP-WEIGHTS-INTO-FN &lt;= #'MAP-INTO)</em></p>
+<li><p>[reader] <strong>MAP-WEIGHTS-INTO-FN</strong> <em>DIFFERENTIAL-EVOLUTION</em> <em>(:MAP-WEIGHTS-INTO-FN = #'MAP-INTO)</em></p>
 
 <p>The vector of numbers (the 'weights') are most
 often stored in some kind of array. All individuals must have the
@@ -765,7 +765,7 @@ Typically this just calls <code>MAKE-ARRAY</code>.</p></li>
 <p><a name='x-28MGL-GPR-3ACROSSOVER-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29'></a></p>
 
 <ul>
-<li><p>[reader] <strong>CROSSOVER-FN</strong> <em>DIFFERENTIAL-EVOLUTION</em> <em>(:CROSSOVER-FN &lt;= #'CROSSOVER/BINARY)</em></p>
+<li><p>[reader] <strong>CROSSOVER-FN</strong> <em>DIFFERENTIAL-EVOLUTION</em> <em>(:CROSSOVER-FN = #'CROSSOVER/BINARY)</em></p>
 
 <p>A function of three arguments, the DE and two
 individuals, that destructively modifies the second individual by
