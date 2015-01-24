@@ -195,7 +195,7 @@
                      :result-type float
                      :argument-types '(float float))
 
-  See the macro OPERATOR for a shorthand for the above.
+  See the macro [OPERATOR][macro] for a shorthand for the above.
 
   Currently no lambda list keywords are supported and there is no way
   to define how an expression with a particular operator is to be
