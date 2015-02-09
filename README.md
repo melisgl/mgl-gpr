@@ -380,7 +380,7 @@ literal lists.
                        :result-type float
                        :argument-types '(float float))
     
-    See the macro [`OPERATOR`][0982] for a shorthand for the above.
+    See the macro [`OPERATOR`][e8fb] for a shorthand for the above.
     
     Currently no lambda list keywords are supported and there is no way
     to define how an expression with a particular operator is to be
@@ -399,7 +399,7 @@ literal lists.
     A list of lisp types. One for each argument of
     this operator.
 
-<a name='x-28MGL-GPR-3AOPERATOR-20MGL-PAX-3AMACRO-29'></a>
+<a name='x-28MGL-GPR-3AOPERATOR-20-28MGL-PAX-3AMACRO-29-29'></a>
 
 - [macro] **OPERATOR** *(NAME &REST ARG-TYPES) RESULT-TYPE &KEY (WEIGHT 1)*
 
@@ -433,7 +433,7 @@ literal lists.
     A function of no arguments that returns a random
     literal that belongs to its literal class.
 
-<a name='x-28MGL-GPR-3ALITERAL-20MGL-PAX-3AMACRO-29'></a>
+<a name='x-28MGL-GPR-3ALITERAL-20-28MGL-PAX-3AMACRO-29-29'></a>
 
 - [macro] **LITERAL** *(RESULT-TYPE &KEY (WEIGHT 1)) &BODY BODY*
 
@@ -703,7 +703,6 @@ Evolution: A Survey of the State-of-the-Art][1].
     generic EA ones: [`POPULATION-SIZE`][16f0], [`EVALUATOR`][3a17], etc. One also has to
     specify [`MAP-WEIGHTS-INTO-FN`][dc61] and [`CREATE-INDIVIDUAL-FN`][d1f0].
 
-  [0982]: #x-28MGL-GPR-3AOPERATOR-20MGL-PAX-3AMACRO-29 "(MGL-GPR:OPERATOR MGL-PAX:MACRO)"
   [119c]: #x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29 "(MGL-GPR:HOLD-TOURNAMENT FUNCTION)"
   [16f0]: #x-28MGL-GPR-3APOPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29 "(MGL-GPR:POPULATION-SIZE (MGL-PAX:ACCESSOR MGL-GPR:EVOLUTIONARY-ALGORITHM))"
   [1762]: #x-28MGL-GPR-3AMUTATE-2FBEST-2F1-20FUNCTION-29 "(MGL-GPR:MUTATE/BEST/1 FUNCTION)"
@@ -743,6 +742,7 @@ Evolution: A Survey of the State-of-the-Art][1].
   [dc61]: #x-28MGL-GPR-3AMAP-WEIGHTS-INTO-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29 "(MGL-GPR:MAP-WEIGHTS-INTO-FN (MGL-PAX:READER MGL-GPR:DIFFERENTIAL-EVOLUTION))"
   [dce4]: #x-28MGL-GPR-3AADVANCE-20GENERIC-FUNCTION-29 "(MGL-GPR:ADVANCE GENERIC-FUNCTION)"
   [e483]: #x-28MGL-GPR-3A-40GPR-GP-SEARCH-SPACE-20MGL-PAX-3ASECTION-29 "(MGL-GPR:@GPR-GP-SEARCH-SPACE MGL-PAX:SECTION)"
+  [e8fb]: #x-28MGL-GPR-3AOPERATOR-20-28MGL-PAX-3AMACRO-29-29 "(MGL-GPR:OPERATOR (MGL-PAX:MACRO))"
   [ea3c]: #x-28MGL-GPR-3ATOPLEVEL-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29 "(MGL-GPR:TOPLEVEL-TYPE (MGL-PAX:READER MGL-GPR:GENETIC-PROGRAMMING))"
   [ea46]: #x-28MGL-GPR-3AOPERATOR-20CLASS-29 "(MGL-GPR:OPERATOR CLASS)"
   [ea57]: #x-28MGL-GPR-3ARANDOM-EXPRESSION-20FUNCTION-29 "(MGL-GPR:RANDOM-EXPRESSION FUNCTION)"
