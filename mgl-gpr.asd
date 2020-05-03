@@ -18,7 +18,8 @@
                              (:file "util")
                              (:file "tree")
                              (:file "genetic-programming")
-                             (:file "differential-evolution")))))
+                             (:file "differential-evolution")
+                             (:file "doc")))))
 
 (defmethod asdf:perform ((o asdf:test-op)
                          (c (eql (asdf:find-system '#:mgl-gpr))))

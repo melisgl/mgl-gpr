@@ -2,10 +2,17 @@
 
 (defsection @gpr-manual (:title "GPR Manual")
   (mgl-gpr asdf:system)
+  (@gpr-gp-links section)
   (@gpr-background section)
   (@gpr-ea section)
   (@gpr-gp section)
   (@gpr-de section))
+
+(defsection @gpr-gp-links (:title "Links")
+  "Here is the [official
+  repository](https://github.com/melisgl/mgl-gpr) and the [HTML
+  documentation](http://melisgl.github.io/mgl-gpr/gpr-manual.html)
+  for the latest version.")
 
 (defsection @gpr-background (:title "Background")
   "Evolutionary algorithms are optimization tools that assume little
