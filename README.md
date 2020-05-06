@@ -32,9 +32,11 @@
   as Genetic Programming (evolving typed expressions from a set of
   operators and constants) and Differential Evolution.
 - Licence: MIT, see COPYING.
-- Author: Gábor Melis
+- Author: Gábor Melis <mega@retes.hu>
 - Mailto: [mega@retes.hu](mailto:mega@retes.hu)
-- Homepage: [http://quotenil.com](http://quotenil.com)
+- Homepage: [http://melisgl.github.io/mgl-gpr](http://melisgl.github.io/mgl-gpr)
+- Bug tracker: [https://github.com/melisgl/mgl-gpr/issues](https://github.com/melisgl/mgl-gpr/issues)
+- Source control: [GIT](https://github.com/melisgl/mgl-gpr.git)
 
 <a id='x-28MGL-GPR-3A-40GPR-GP-LINKS-20MGL-PAX-3ASECTION-29'></a>
 

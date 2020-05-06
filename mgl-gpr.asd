@@ -4,9 +4,11 @@
 (asdf:defsystem :mgl-gpr
   :licence "MIT, see COPYING."
   :version "0.0.1"
-  :author "Gábor Melis"
+  :author "Gábor Melis <mega@retes.hu>"
   :mailto "mega@retes.hu"
-  :homepage "http://quotenil.com"
+  :homepage "http://melisgl.github.io/mgl-gpr"
+  :bug-tracker "https://github.com/melisgl/mgl-gpr/issues"
+  :source-control (:git "https://github.com/melisgl/mgl-gpr.git")
   :description "MGL-GPR is a library of evolutionary algorithms such
   as Genetic Programming (evolving typed expressions from a set of
   operators and constants) and Differential Evolution."
