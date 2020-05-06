@@ -21,9 +21,19 @@
                              (:file "tree")
                              (:file "genetic-programming")
                              (:file "differential-evolution")
-                             (:file "doc")))))
+                             (:file "doc"))))
+  :in-order-to ((asdf:test-op (asdf:test-op "mgl-gpr/test"))))
 
-(defmethod asdf:perform ((o asdf:test-op)
-                         (c (eql (asdf:find-system '#:mgl-gpr))))
-  (asdf:oos 'asdf:load-op '#:mgl-gpr-test)
-  (funcall (intern (symbol-name '#:test) (find-package '#:mgl-gpr))))
+(asdf:defsystem mgl-gpr/test
+  :licence "MIT, see COPYING."
+  :author "Gábor Melis <mega@retes.hu>"
+  :mailto "mega@retes.hu"
+  :description "Test system for MGL-GPR."
+  :depends-on (#:mgl-gpr)
+  :components ((:module "test"
+                :serial t
+                :components ((:file "test-tree")
+                             (:file "test-genetic-programming")
+                             (:file "test"))))
+  :perform (asdf:test-op (o s)
+             (uiop:symbol-call '#:mgl-gpr '#:test)))
