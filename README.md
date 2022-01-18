@@ -140,7 +140,7 @@ individuals.
     A function of two arguments: the
     [`EVOLUTIONARY-ALGORITHM`][5a91] object and an individual. It must return
     the fitness of the individual. For [Genetic Programming][d12d], the evaluator often
-    simply calls `EVAL`, or `COMPILE` + `FUNCALL`, and compares the result
+    simply calls [`EVAL`][68db], or [`COMPILE`][a1b8] + [`FUNCALL`][42d8], and compares the result
     to some gold standard. It is also typical to slightly penalize
     solutions with too many nodes to control complexity and evaluation
     cost (see [`COUNT-NODES`][63d7]). For [Differential Evolution][f031], individuals are
@@ -159,7 +159,7 @@ individuals.
     population vector shall be written. By specifying `MASS-EVALUATOR`
     instead of an [`EVALUATOR`][3a17], one can, for example, distribute costly
     evaluations over multiple threads. `MASS-EVALUATOR` has precedence
-    over [`EVALUATOR`][3a17].
+    over `EVALUATOR`.
 
 <a id='x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29'></a>
 
@@ -167,8 +167,8 @@ individuals.
 
     A function that returns a real number for an
     object returned by [`EVALUATOR`][3a17]. It is called when two fitness are to
-    be compared. The default value is #'`IDENTITY` which is sufficient
-    when [`EVALUATOR`][3a17] returns real numbers. However, sometimes the
+    be compared. The default value is #'[`IDENTITY`][a162] which is sufficient
+    when `EVALUATOR` returns real numbers. However, sometimes the
     evaluator returns more information about the solution (such as
     fitness in various situations) and `FITNESS-KEY` key be used to
     select the fitness value.
@@ -267,7 +267,7 @@ expression well:
     (defparameter *target-expr* '(+ 7 (sin (expt (* *x* 2 pi) 2))))
 
 Think of `*TARGET-EXPR*` as a function of `*X*`. The evaluator
-function will bind the special `*X*` to the input and simply `EVAL`
+function will bind the special `*X*` to the input and simply [`EVAL`][68db]
 the expression to be evaluated.
 
     (defvar *x*)
@@ -349,7 +349,7 @@ example/symbolic-regression.lisp.
 ### 5.3 Expressions
 
 Genetic programming works with a population of individuals. The
-individuals are sexps that may be evaluated directly by `EVAL` or by
+individuals are sexps that may be evaluated directly by [`EVAL`][68db] or by
 other means. The internal nodes and the leafs of the sexp as a tree
 represent the application of operators and literal objects,
 respectively. Note that currently there is no way to represent
@@ -384,8 +384,8 @@ literal lists.
 
     Defines how the symbol [`NAME`][3071] in the function
     position of a list can be combined arguments: how many and of what
-    types. The following defines `+` as an operator that adds two
-    `FLOAT`s:
+    types. The following defines `+` as an operator that
+    adds two `FLOAT`([`0`][bb93] [`1`][a0ff])s:
     
         (make-instance 'operator 
                        :name '+
@@ -493,7 +493,7 @@ next generation.
 
 - [class] **GENETIC-PROGRAMMING** *[EVOLUTIONARY-ALGORITHM][5a91]*
 
-    The `GENETIC-PROGRAMMING` class defines the search
+    The [`GENETIC-PROGRAMMING`][c841] class defines the search
     space, how mutation and recombination occur, and hold various
     parameters of the evolutionary process and the individuals
     themselves.
@@ -536,7 +536,7 @@ function acts as the guiding light.
 
     The type of the results produced by individuals.
     If the problem is to find the minimum a 1d real function then this
-    may be the symbol `REAL`. If the problem is to find the shortest
+    may be the symbol [`REAL`][b364]. If the problem is to find the shortest
     route, then this may be a vector. It all depends on the
     representation of the problem, the operators and the literals.
 
@@ -651,7 +651,7 @@ Evolution: A Survey of the State-of-the-Art][1].
     often stored in some kind of array. All individuals must have the
     same number of weights, but the actual representation can be
     anything as long as the function in this slot mimics the semantics
-    of `MAP-INTO` that's the default.
+    of [`MAP-INTO`][5e82] that's the default.
 
 <a id='x-28MGL-GPR-3ACREATE-INDIVIDUAL-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29'></a>
 
@@ -659,7 +659,7 @@ Evolution: A Survey of the State-of-the-Art][1].
 
     Holds a function of one argument, the DE, that
     returns a new individual that needs not be initialized in any way.
-    Typically this just calls `MAKE-ARRAY`.
+    Typically this just calls [`MAKE-ARRAY`][2728].
 
 <a id='x-28MGL-GPR-3AMUTATE-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29'></a>
 
@@ -719,6 +719,7 @@ Evolution: A Survey of the State-of-the-Art][1].
   [119c]: #x-28MGL-GPR-3AHOLD-TOURNAMENT-20FUNCTION-29 "(MGL-GPR:HOLD-TOURNAMENT FUNCTION)"
   [16f0]: #x-28MGL-GPR-3APOPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29 "(MGL-GPR:POPULATION-SIZE (MGL-PAX:ACCESSOR MGL-GPR:EVOLUTIONARY-ALGORITHM))"
   [1762]: #x-28MGL-GPR-3AMUTATE-2FBEST-2F1-20FUNCTION-29 "(MGL-GPR:MUTATE/BEST/1 FUNCTION)"
+  [2728]: http://www.lispworks.com/documentation/HyperSpec/Body/f_mk_ar.htm "(MAKE-ARRAY FUNCTION)"
   [27ef]: #x-28MGL-GPR-3ARESULT-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29 "(MGL-GPR:RESULT-TYPE (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"
   [2af3]: #x-28MGL-GPR-3AEXPRESSION-CLASS-20CLASS-29 "(MGL-GPR:EXPRESSION-CLASS CLASS)"
   [2cb1]: #x-28MGL-GPR-3A-40GPR-EA-EVALUATION-20MGL-PAX-3ASECTION-29 "Evaluation"
@@ -726,30 +727,42 @@ Evolution: A Survey of the State-of-the-Art][1].
   [3071]: #x-28MGL-GPR-3ANAME-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29 "(MGL-GPR:NAME (MGL-PAX:READER MGL-GPR:OPERATOR))"
   [3a17]: #x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29 "(MGL-GPR:EVALUATOR (MGL-PAX:READER MGL-GPR:EVOLUTIONARY-ALGORITHM))"
   [3ae0]: #x-28MGL-GPR-3A-40GPR-GP-BASICS-20MGL-PAX-3ASECTION-29 "Basics"
+  [42d8]: http://www.lispworks.com/documentation/HyperSpec/Body/f_funcal.htm "(FUNCALL FUNCTION)"
   [46d4]: #x-28MGL-GPR-3A-40GPR-GP-EXPRESSIONS-20MGL-PAX-3ASECTION-29 "Expressions"
   [4f32]: #x-28-23A-28-287-29-20BASE-CHAR-20-2E-20-22mgl-gpr-22-29-20ASDF-2FSYSTEM-3ASYSTEM-29 "(#A((7) BASE-CHAR . \"mgl-gpr\") ASDF/SYSTEM:SYSTEM)"
   [56b8]: #x-28MGL-GPR-3A-40GPR-EA-TRAINING-20MGL-PAX-3ASECTION-29 "Training"
   [5a91]: #x-28MGL-GPR-3AEVOLUTIONARY-ALGORITHM-20CLASS-29 "(MGL-GPR:EVOLUTIONARY-ALGORITHM CLASS)"
   [5af0]: #x-28MGL-GPR-3ALITERAL-20CLASS-29 "(MGL-GPR:LITERAL CLASS)"
   [5af1]: #x-28MGL-GPR-3ASELECTOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29 "(MGL-GPR:SELECTOR (MGL-PAX:READER MGL-GPR:GENETIC-PROGRAMMING))"
+  [5e82]: http://www.lispworks.com/documentation/HyperSpec/Body/f_map_in.htm "(MAP-INTO FUNCTION)"
   [6161]: #x-28MGL-GPR-3ACROSSOVER-2FBINARY-20FUNCTION-29 "(MGL-GPR:CROSSOVER/BINARY FUNCTION)"
   [63d7]: #x-28MGL-GPR-3ACOUNT-NODES-20FUNCTION-29 "(MGL-GPR:COUNT-NODES FUNCTION)"
+  [68db]: http://www.lispworks.com/documentation/HyperSpec/Body/f_eval.htm "(EVAL FUNCTION)"
   [77f9]: #x-28MGL-GPR-3A-40GPR-GP-LINKS-20MGL-PAX-3ASECTION-29 "Links"
   [7e89]: #x-28MGL-GPR-3A-40GPR-GP-TUTORIAL-20MGL-PAX-3ASECTION-29 "Tutorial"
   [850e]: #x-28MGL-GPR-3A-40GPR-GP-REPRODUCTION-20MGL-PAX-3ASECTION-29 "Reproduction"
   [864d]: #x-28MGL-GPR-3AADD-INDIVIDUAL-20FUNCTION-29 "(MGL-GPR:ADD-INDIVIDUAL FUNCTION)"
   [8bb2]: #x-28MGL-GPR-3ABUILDER-20-28MGL-PAX-3AREADER-20MGL-GPR-3ALITERAL-29-29 "(MGL-GPR:BUILDER (MGL-PAX:READER MGL-GPR:LITERAL))"
   [9058]: #x-28MGL-GPR-3A-40GPR-GP-BACKGROUND-20MGL-PAX-3ASECTION-29 "Background"
+  [94b1]: http://www.lispworks.com/documentation/HyperSpec/Body/t_nil.htm "(NIL TYPE)"
+  [9d3a]: http://www.lispworks.com/documentation/HyperSpec/Body/v_nil.htm "(NIL MGL-PAX:CONSTANT)"
+  [a0ff]: http://www.lispworks.com/documentation/HyperSpec/Body/t_float.htm "(FLOAT TYPE)"
+  [a162]: http://www.lispworks.com/documentation/HyperSpec/Body/f_identi.htm "(IDENTITY FUNCTION)"
+  [a1b8]: http://www.lispworks.com/documentation/HyperSpec/Body/f_cmp.htm "(COMPILE FUNCTION)"
   [affb]: #x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29 "(MGL-GPR:MASS-EVALUATOR (MGL-PAX:READER MGL-GPR:EVOLUTIONARY-ALGORITHM))"
+  [b364]: http://www.lispworks.com/documentation/HyperSpec/Body/t_real.htm "(REAL TYPE)"
   [b51f]: #x-28MGL-GPR-3AMUTATE-2FCURRENT-TO-BEST-2F2-20FUNCTION-29 "(MGL-GPR:MUTATE/CURRENT-TO-BEST/2 FUNCTION)"
   [b568]: #x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29 "(MGL-GPR:WEIGHT (MGL-PAX:READER MGL-GPR:EXPRESSION-CLASS))"
   [b5d2]: #x-28MGL-GPR-3AFITTEST-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29 "(MGL-GPR:FITTEST (MGL-PAX:READER MGL-GPR:EVOLUTIONARY-ALGORITHM))"
+  [b743]: http://www.lispworks.com/documentation/HyperSpec/Body/v_t.htm "(T MGL-PAX:CONSTANT)"
   [b917]: #x-28MGL-GPR-3A-40GPR-EA-POPULATION-20MGL-PAX-3ASECTION-29 "Populations"
+  [bb93]: http://www.lispworks.com/documentation/HyperSpec/Body/f_float.htm "(FLOAT FUNCTION)"
   [bbdb]: #x-28MGL-GPR-3A-40GPR-DE-SANSDE-20MGL-PAX-3ASECTION-29 "SANSDE"
   [bf34]: #x-28MGL-GPR-3A-40GPR-GP-ENVIRONMENT-20MGL-PAX-3ASECTION-29 "Environment"
   [c15d]: #x-28MGL-GPR-3APOPULATION-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29 "(MGL-GPR:POPULATION (MGL-PAX:ACCESSOR MGL-GPR:EVOLUTIONARY-ALGORITHM))"
   [c233]: #x-28MGL-GPR-3ARANDOMIZER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29 "(MGL-GPR:RANDOMIZER (MGL-PAX:READER MGL-GPR:GENETIC-PROGRAMMING))"
   [c841]: #x-28MGL-GPR-3AGENETIC-PROGRAMMING-20CLASS-29 "(MGL-GPR:GENETIC-PROGRAMMING CLASS)"
+  [cb19]: http://www.lispworks.com/documentation/HyperSpec/Body/t_t.htm "(T TYPE)"
   [cb67]: #x-28MGL-GPR-3AARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29 "(MGL-GPR:ARGUMENT-TYPES (MGL-PAX:READER MGL-GPR:OPERATOR))"
   [d12d]: #x-28MGL-GPR-3A-40GPR-GP-20MGL-PAX-3ASECTION-29 "Genetic Programming"
   [d1ea]: #x-28MGL-GPR-3ALITERAL-20MGL-PAX-3AMACRO-29 "(MGL-GPR:LITERAL MGL-PAX:MACRO)"
