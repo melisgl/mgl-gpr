@@ -187,7 +187,7 @@
     this operator."))
   (:documentation "Defines how the symbol NAME in the function
   position of a list can be combined arguments: how many and of what
-  types. The following defines [+][dislocated] as an operator that
+  types. The following defines [`+`][dislocated] as an operator that
   adds two `FLOAT`s:
 
       (make-instance 'operator 
