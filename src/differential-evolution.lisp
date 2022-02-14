@@ -191,7 +191,7 @@
                        (aref population i2))))))
 
 
-(defsection @gpr-de-sansde (:title "SANSDE")
+(defsection @gpr-de-sansde (:title "\\SANSDE")
   (sansde class))
 
 (defsection @sansde ()

@@ -3,7 +3,7 @@
 
 ## Table of Contents
 
-- [1 MGL-GPR ASDF System Details][34da]
+- [1 `MGL-GPR` ASDF System][34da]
 - [2 Links][6e4d]
 - [3 Background][2e8a]
 - [4 Evolutionary Algorithms][057a]
@@ -23,7 +23,7 @@
 
 ###### \[in package MGL-GPR\]
 <a id="x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29"></a>
-## 1 MGL-GPR ASDF System Details
+## 1 `MGL-GPR` ASDF System
 
 - Version: 0.0.1
 - Description: [`MGL-GPR`][34da] is a library of evolutionary algorithms such
@@ -91,7 +91,7 @@ individuals) which they replace with the next generation of
 individuals.
 
 <a id="x-28MGL-GPR-3APOPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [accessor] **POPULATION-SIZE** *EVOLUTIONARY-ALGORITHM* *(:POPULATION-SIZE)*
+- [accessor] **POPULATION-SIZE** *EVOLUTIONARY-ALGORITHM (:POPULATION-SIZE)*
 
     The number of individuals in a generation. This is
     a very important parameter. Too low and there won't be enough
@@ -99,13 +99,13 @@ individuals.
     slow.
 
 <a id="x-28MGL-GPR-3APOPULATION-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [accessor] **POPULATION** *EVOLUTIONARY-ALGORITHM* *(= (MAKE-ARRAY 0 :ADJUSTABLE 0 :FILL-POINTER T))*
+- [accessor] **POPULATION** *EVOLUTIONARY-ALGORITHM (= (MAKE-ARRAY 0 :ADJUSTABLE 0 :FILL-POINTER T))*
 
     An adjustable array with a fill-pointer that holds
     the individuals that make up the population.
 
 <a id="x-28MGL-GPR-3AGENERATION-COUNTER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [reader] **GENERATION-COUNTER** *EVOLUTIONARY-ALGORITHM* *(= 0)*
+- [reader] **GENERATION-COUNTER** *EVOLUTIONARY-ALGORITHM (= 0)*
 
     A counter that starts from 0 and is incremented by
     [`ADVANCE`][be13]. All accessors of [`EVOLUTIONARY-ALGORITHM`][f5ee] are allowed to be
@@ -122,7 +122,7 @@ individuals.
 ### 4.2 Evaluation
 
 <a id="x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [reader] **EVALUATOR** *EVOLUTIONARY-ALGORITHM* *(:EVALUATOR)*
+- [reader] **EVALUATOR** *EVOLUTIONARY-ALGORITHM (:EVALUATOR)*
 
     A function of two arguments: the
     [`EVOLUTIONARY-ALGORITHM`][f5ee] object and an individual. It must return
@@ -137,7 +137,7 @@ individuals.
     Alternatively, one can specify [`MASS-EVALUATOR`][ef7a] instead.
 
 <a id="x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [reader] **MASS-EVALUATOR** *EVOLUTIONARY-ALGORITHM* *(:MASS-EVALUATOR = NIL)*
+- [reader] **MASS-EVALUATOR** *EVOLUTIONARY-ALGORITHM (:MASS-EVALUATOR = NIL)*
 
     `NIL` or a function of three arguments: the
     [`EVOLUTIONARY-ALGORITHM`][f5ee] object, the population vector and the
@@ -148,7 +148,7 @@ individuals.
     over `EVALUATOR`.
 
 <a id="x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [reader] **FITNESS-KEY** *EVOLUTIONARY-ALGORITHM* *(:FITNESS-KEY = #'IDENTITY)*
+- [reader] **FITNESS-KEY** *EVOLUTIONARY-ALGORITHM (:FITNESS-KEY = #'IDENTITY)*
 
     A function that returns a real number for an
     object returned by [`EVALUATOR`][9a7e]. It is called when two fitness are to
@@ -175,13 +175,13 @@ generations or until the [`FITTEST`][9631] individual is good enough.
     [`POPULATION`][1602] of `EA`.
 
 <a id="x-28MGL-GPR-3AFITTEST-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [reader] **FITTEST** *EVOLUTIONARY-ALGORITHM* *(= NIL)*
+- [reader] **FITTEST** *EVOLUTIONARY-ALGORITHM (= NIL)*
 
     The fittest individual ever to be seen and its
     fittness as a cons cell.
 
 <a id="x-28MGL-GPR-3AFITTEST-CHANGED-FN-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
-- [accessor] **FITTEST-CHANGED-FN** *EVOLUTIONARY-ALGORITHM* *(:FITTEST-CHANGED-FN = NIL)*
+- [accessor] **FITTEST-CHANGED-FN** *EVOLUTIONARY-ALGORITHM (:FITTEST-CHANGED-FN = NIL)*
 
     If non-NIL, a function that's called when [`FITTEST`][9631]
     is updated with three arguments: the [`EVOLUTIONARY-ALGORITHM`][f5ee]
@@ -340,13 +340,13 @@ literal lists.
     class and what lisp type those expressions evaluate to.
 
 <a id="x-28MGL-GPR-3ARESULT-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29"></a>
-- [reader] **RESULT-TYPE** *EXPRESSION-CLASS* *(:RESULT-TYPE)*
+- [reader] **RESULT-TYPE** *EXPRESSION-CLASS (:RESULT-TYPE)*
 
     Expressions belonging to this expression class
     must evaluate to a value of this lisp type.
 
 <a id="x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29"></a>
-- [reader] **WEIGHT** *EXPRESSION-CLASS* *(:WEIGHT = 1)*
+- [reader] **WEIGHT** *EXPRESSION-CLASS (:WEIGHT = 1)*
 
     The probability of an expression class to be
     selected from a set of candidates is proportional to its
@@ -372,12 +372,12 @@ literal lists.
     built. See [`RANDOM-EXPRESSION`][7df2].
 
 <a id="x-28MGL-GPR-3ANAME-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29"></a>
-- [reader] **NAME** *OPERATOR* *(:NAME)*
+- [reader] **NAME** *OPERATOR (:NAME)*
 
     A symbol that's the name of the operator.
 
 <a id="x-28MGL-GPR-3AARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29"></a>
-- [reader] **ARGUMENT-TYPES** *OPERATOR* *(:ARGUMENT-TYPES)*
+- [reader] **ARGUMENT-TYPES** *OPERATOR (:ARGUMENT-TYPES)*
 
     A list of lisp types. One for each argument of
     this operator.
@@ -408,7 +408,7 @@ literal lists.
     macro provides a more convenient shorthand.
 
 <a id="x-28MGL-GPR-3ABUILDER-20-28MGL-PAX-3AREADER-20MGL-GPR-3ALITERAL-29-29"></a>
-- [reader] **BUILDER** *LITERAL* *(:BUILDER)*
+- [reader] **BUILDER** *LITERAL (:BUILDER)*
 
     A function of no arguments that returns a random
     literal that belongs to its literal class.
@@ -479,19 +479,19 @@ literals and the type of the final result produced. The evaluator
 function acts as the guiding light.
 
 <a id="x-28MGL-GPR-3AOPERATORS-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [reader] **OPERATORS** *GENETIC-PROGRAMMING* *(:OPERATORS)*
+- [reader] **OPERATORS** *GENETIC-PROGRAMMING (:OPERATORS)*
 
     The set of [`OPERATOR`][b75b]s from which (together
     with [`LITERAL`][32b7]s) individuals are built.
 
 <a id="x-28MGL-GPR-3ALITERALS-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [reader] **LITERALS** *GENETIC-PROGRAMMING* *(:LITERALS)*
+- [reader] **LITERALS** *GENETIC-PROGRAMMING (:LITERALS)*
 
     The set of [`LITERAL`][32b7]s from which (together
     with [`OPERATOR`][b75b]s) individuals are built.
 
 <a id="x-28MGL-GPR-3ATOPLEVEL-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [reader] **TOPLEVEL-TYPE** *GENETIC-PROGRAMMING* *(:TOPLEVEL-TYPE = T)*
+- [reader] **TOPLEVEL-TYPE** *GENETIC-PROGRAMMING (:TOPLEVEL-TYPE = T)*
 
     The type of the results produced by individuals.
     If the problem is to find the minimum a 1d real function then this
@@ -512,7 +512,7 @@ The [`RANDOMIZER`][612d] and [`SELECTOR`][049c] functions define how mutation an
 recombination occur.
 
 <a id="x-28MGL-GPR-3ARANDOMIZER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [reader] **RANDOMIZER** *GENETIC-PROGRAMMING* *(:RANDOMIZER)*
+- [reader] **RANDOMIZER** *GENETIC-PROGRAMMING (:RANDOMIZER)*
 
     Used for mutations, this is a function of three
     arguments: the GP object, the type the expression must produce and
@@ -520,7 +520,7 @@ recombination occur.
     called with subexpressions of individuals.
 
 <a id="x-28MGL-GPR-3ASELECTOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [reader] **SELECTOR** *GENETIC-PROGRAMMING* *(:SELECTOR)*
+- [reader] **SELECTOR** *GENETIC-PROGRAMMING (:SELECTOR)*
 
     A function of two arguments: the GP object and a
     vector of fitnesses. It must return the and index into the fitness
@@ -550,14 +550,14 @@ until [`POPULATION-SIZE`][ce25] is reached in the new generation. At each
 step, a reproduction operator is randomly chosen.
 
 <a id="x-28MGL-GPR-3ACOPY-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [accessor] **COPY-CHANCE** *GENETIC-PROGRAMMING* *(:COPY-CHANCE = 0)*
+- [accessor] **COPY-CHANCE** *GENETIC-PROGRAMMING (:COPY-CHANCE = 0)*
 
     The probability of the copying reproduction
     operator being chosen. Copying simply creates an exact copy of a
     single individual.
 
 <a id="x-28MGL-GPR-3AMUTATION-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [accessor] **MUTATION-CHANCE** *GENETIC-PROGRAMMING* *(:MUTATION-CHANCE = 0)*
+- [accessor] **MUTATION-CHANCE** *GENETIC-PROGRAMMING (:MUTATION-CHANCE = 0)*
 
     The probability of the mutation reproduction
     operator being chosen. Mutation creates a randomly altered copy of
@@ -567,7 +567,7 @@ If neither copying nor mutation were chosen, then a crossover will
 take place.
 
 <a id="x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
-- [accessor] **KEEP-FITTEST-P** *GENETIC-PROGRAMMING* *(:KEEP-FITTEST-P = T)*
+- [accessor] **KEEP-FITTEST-P** *GENETIC-PROGRAMMING (:KEEP-FITTEST-P = T)*
 
     If true, then the fittest individual is always
     copied without mutation to the next generation. Of course, it may
@@ -592,7 +592,7 @@ Evolution: A Survey of the State-of-the-Art][2f1d].
     individuals.
 
 <a id="x-28MGL-GPR-3AMAP-WEIGHTS-INTO-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
-- [reader] **MAP-WEIGHTS-INTO-FN** *DIFFERENTIAL-EVOLUTION* *(:MAP-WEIGHTS-INTO-FN = #'MAP-INTO)*
+- [reader] **MAP-WEIGHTS-INTO-FN** *DIFFERENTIAL-EVOLUTION (:MAP-WEIGHTS-INTO-FN = #'MAP-INTO)*
 
     The vector of numbers (the 'weights') are most
     often stored in some kind of array. All individuals must have the
@@ -601,20 +601,20 @@ Evolution: A Survey of the State-of-the-Art][2f1d].
     of [`MAP-INTO`][ce52] that's the default.
 
 <a id="x-28MGL-GPR-3ACREATE-INDIVIDUAL-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
-- [reader] **CREATE-INDIVIDUAL-FN** *DIFFERENTIAL-EVOLUTION* *(:CREATE-INDIVIDUAL-FN)*
+- [reader] **CREATE-INDIVIDUAL-FN** *DIFFERENTIAL-EVOLUTION (:CREATE-INDIVIDUAL-FN)*
 
     Holds a function of one argument, the DE, that
     returns a new individual that needs not be initialized in any way.
     Typically this just calls [`MAKE-ARRAY`][0b2b].
 
 <a id="x-28MGL-GPR-3AMUTATE-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
-- [reader] **MUTATE-FN** *DIFFERENTIAL-EVOLUTION* *(:MUTATE-FN)*
+- [reader] **MUTATE-FN** *DIFFERENTIAL-EVOLUTION (:MUTATE-FN)*
 
     One of the supplied mutation functions:
     [`MUTATE/RAND/1`][720f] [`MUTATE/BEST/1`][2fdd] [`MUTATE/CURRENT-TO-BEST/2`][f19b].
 
 <a id="x-28MGL-GPR-3ACROSSOVER-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
-- [reader] **CROSSOVER-FN** *DIFFERENTIAL-EVOLUTION* *(:CROSSOVER-FN = #'CROSSOVER/BINARY)*
+- [reader] **CROSSOVER-FN** *DIFFERENTIAL-EVOLUTION (:CROSSOVER-FN = #'CROSSOVER/BINARY)*
 
     A function of three arguments, the DE and two
     individuals, that destructively modifies the second individual by
