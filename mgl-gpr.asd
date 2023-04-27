@@ -1,6 +1,6 @@
 ;;;; -*-mode: Lisp; coding: utf-8;-*-
 
-;;; See MGL-GPR:@GPR-MANUAL for the user guide.
+;;; See MGL-GPR::@GPR-MANUAL for the user guide.
 (asdf:defsystem :mgl-gpr
   :licence "MIT, see COPYING."
   :version "0.0.1"
