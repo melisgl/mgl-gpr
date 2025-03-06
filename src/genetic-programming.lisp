@@ -225,7 +225,7 @@
     literal that belongs to its literal class."))
   (:documentation "This is slightly misnamed. An object belonging to
   the LITERAL class is not a literal itself, it's a factory for
-  literals via its BUILDER function. For example, the following
+  literals via its [BUILDER][] function. For example, the following
   literal builds bytes:
 
       (make-instance 'literal
@@ -370,7 +370,7 @@
   convenience function calls RANDOM-EXPRESSION to create a random
   individual that produces GP's TOPLEVEL-TYPE. By passing in another
   TYPE one can create expressions that fit somewhere else in a larger
-  expression which is useful in a RANDOMIZER function."
+  expression, which is useful in a [RANDOMIZER][] function."
   (random-expression (operators gp) (literals gp) type terminate-fn))
 
 (defmethod advance ((gp genetic-programming))
