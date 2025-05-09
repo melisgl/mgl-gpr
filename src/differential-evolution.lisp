@@ -222,16 +222,14 @@
         finally (return x)))
 
 (defun draw-positive-normal (mean stddev)
-  (let ((r (cl-random:r-normal mean (expt stddev 2))))
-    (loop for x = (cl-random:draw r)
-          until (plusp x)
-          finally (return x))))
+  (loop for x = (random-normal mean stddev)
+        until (plusp x)
+        finally (return x)))
 
 (defun draw-rate (mean stddev)
-  (let ((r (cl-random:r-normal mean (expt stddev 2))))
-    (loop for x = (cl-random:draw r)
-          until (< 0 x 1)
-          finally (return x))))
+  (loop for x = (random-normal mean stddev)
+        until (< 0 x 1)
+        finally (return x)))
 
 (defun mutate/sansde (de current best population nursery)
   (let* ((mutation-factor-choice (if (< (random 1.0) (mutation-factor-pr de))

@@ -12,7 +12,7 @@
   :description "MGL-GPR is a library of evolutionary algorithms such
   as Genetic Programming (evolving typed expressions from a set of
   operators and constants) and Differential Evolution."
-  :depends-on (#:cl-random #:mgl-pax)
+  :depends-on (#:mgl-pax)
   :components ((:module "src"
                 :serial t
                 :components ((:file "package")

@@ -54,3 +54,24 @@
             sum (funcall key (car l)))
       (loop for i upfrom start below end
             sum (funcall key (aref seq i)))))
+
+(defun gaussian-random-1 ()
+  "Return a double float of zero mean and unit variance."
+  (loop
+    (let* ((x1 (1- (* 2d0 (random 1d0))))
+           (x2 (1- (* 2d0 (random 1d0))))
+           (w (+ (* x1 x1) (* x2 x2))))
+      (declare (type double-float x1 x2)
+               (type double-float w)
+               (optimize (speed 3)))
+      (when (< w 1d0)
+        ;; Now we have two random numbers but return only one. The
+        ;; other would be X1 times the same.
+        (return
+          (* x2
+             (locally (declare (optimize (safety 0)))
+               (the double-float (sqrt (/ (* -2d0 (log w)) w))))))))))
+
+(defun random-normal (mean stddev)
+  (let ((x (gaussian-random-1)))
+    (+ mean (* x stddev))))
