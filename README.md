@@ -4,43 +4,42 @@
 
 ## Table of Contents
 
-- [1 The mgl-gpr ASDF System][34da]
-- [2 Links][6e4d]
-- [3 Background][2e8a]
-- [4 Evolutionary Algorithms][057a]
-    - [4.1 Populations][9cba]
-    - [4.2 Evaluation][b60a]
-    - [4.3 Training][e87f]
-- [5 Genetic Programming][0d2f]
-    - [5.1 Background][c392]
-    - [5.2 Tutorial][075b]
-    - [5.3 Expressions][f9a4]
-    - [5.4 Basics][e084]
-    - [5.5 Search Space][9085]
-    - [5.6 Reproduction][5d57]
-    - [5.7 Environment][084d]
-- [6 Differential Evolution][db20]
-    - [6.1 SANSDE][40a0]
+- [1 Links][6e4d]
+- [2 Background][2e8a]
+- [3 Evolutionary Algorithms][057a]
+    - [3.1 Populations][9cba]
+    - [3.2 Evaluation][b60a]
+    - [3.3 Training][e87f]
+- [4 Genetic Programming][0d2f]
+    - [4.1 Background][c392]
+    - [4.2 Tutorial][075b]
+    - [4.3 Expressions][f9a4]
+    - [4.4 Basics][e084]
+    - [4.5 Search Space][9085]
+    - [4.6 Reproduction][5d57]
+    - [4.7 Environment][084d]
+- [5 Differential Evolution][db20]
+    - [5.1 SANSDE][40a0]
 
 ###### \[in package MGL-GPR\]
 <a id="x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29"></a>
 
-## 1 The mgl-gpr ASDF System
-
-- Version: 0.0.1
-- Description: `MGL-GPR` is a library of evolutionary algorithms such
-  as Genetic Programming (evolving typed expressions from a set of
-  operators and constants) and Differential Evolution.
-- Licence: MIT, see COPYING.
-- Author: Gábor Melis <mega@retes.hu>
-- Mailto: [mega@retes.hu](mailto:mega@retes.hu)
-- Homepage: [http://melisgl.github.io/mgl-gpr](http://melisgl.github.io/mgl-gpr)
-- Bug tracker: [https://github.com/melisgl/mgl-gpr/issues](https://github.com/melisgl/mgl-gpr/issues)
-- Source control: [GIT](https://github.com/melisgl/mgl-gpr.git)
+- [system] **"mgl-gpr"**
+    - _Version:_ 0.0.1
+    - _Description:_ `MGL-GPR` is a library of evolutionary algorithms such
+        as Genetic Programming (evolving typed expressions from a set of
+        operators and constants) and Differential Evolution.
+    - _Licence:_ MIT, see COPYING.
+    - _Author:_ Gábor Melis <mega@retes.hu>
+    - _Mailto:_ [mega@retes.hu](mailto:mega@retes.hu)
+    - _Homepage:_ [http://melisgl.github.io/mgl-gpr](http://melisgl.github.io/mgl-gpr)
+    - _Bug tracker:_ [https://github.com/melisgl/mgl-gpr/issues](https://github.com/melisgl/mgl-gpr/issues)
+    - _Source control:_ [GIT](https://github.com/melisgl/mgl-gpr.git)
+    - *Depends on:* mgl-pax
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-LINKS-20MGL-PAX-3ASECTION-29"></a>
 
-## 2 Links
+## 1 Links
 
 Here is the [official
 repository](https://github.com/melisgl/mgl-gpr) and the [HTML
@@ -49,7 +48,7 @@ for the latest version.
 
 <a id="x-28MGL-GPR-3A-40GPR-BACKGROUND-20MGL-PAX-3ASECTION-29"></a>
 
-## 3 Background
+## 2 Background
 
 Evolutionary algorithms are optimization tools that assume little
 of the task at hand. Often they are population based, that is, there
@@ -75,7 +74,7 @@ Enjoy.
 
 <a id="x-28MGL-GPR-3A-40GPR-EA-20MGL-PAX-3ASECTION-29"></a>
 
-## 4 Evolutionary Algorithms
+## 3 Evolutionary Algorithms
 
 Evolutionary algorithm is an umbrella term. In this section we
 first discuss the concepts common to conrete evolutionary algorithms
@@ -90,7 +89,7 @@ first discuss the concepts common to conrete evolutionary algorithms
 
 <a id="x-28MGL-GPR-3A-40GPR-EA-POPULATION-20MGL-PAX-3ASECTION-29"></a>
 
-### 4.1 Populations
+### 3.1 Populations
 
 The currenly implemented EAs are generational. That is, they
 maintain a population of candidate solutions (also known as
@@ -99,7 +98,7 @@ individuals.
 
 <a id="x-28MGL-GPR-3APOPULATION-SIZE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [accessor] **POPULATION-SIZE** *EVOLUTIONARY-ALGORITHM (:POPULATION-SIZE)*
+- [accessor] **POPULATION-SIZE** *[EVOLUTIONARY-ALGORITHM][f5ee] (:POPULATION-SIZE)*
 
     The number of individuals in a generation. This is
     a very important parameter. Too low and there won't be enough
@@ -108,14 +107,14 @@ individuals.
 
 <a id="x-28MGL-GPR-3APOPULATION-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [accessor] **POPULATION** *EVOLUTIONARY-ALGORITHM (= (MAKE-ARRAY 0 :ADJUSTABLE 0 :FILL-POINTER T))*
+- [accessor] **POPULATION** *[EVOLUTIONARY-ALGORITHM][f5ee] (= (MAKE-ARRAY 0 :ADJUSTABLE 0 :FILL-POINTER T))*
 
     An adjustable array with a fill-pointer that holds
     the individuals that make up the population.
 
 <a id="x-28MGL-GPR-3AGENERATION-COUNTER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [reader] **GENERATION-COUNTER** *EVOLUTIONARY-ALGORITHM (= 0)*
+- [reader] **GENERATION-COUNTER** *[EVOLUTIONARY-ALGORITHM][f5ee] (= 0)*
 
     A counter that starts from 0 and is incremented by
     [`ADVANCE`][be13]. All accessors of [`EVOLUTIONARY-ALGORITHM`][f5ee] are allowed to be
@@ -131,11 +130,11 @@ individuals.
 
 <a id="x-28MGL-GPR-3A-40GPR-EA-EVALUATION-20MGL-PAX-3ASECTION-29"></a>
 
-### 4.2 Evaluation
+### 3.2 Evaluation
 
 <a id="x-28MGL-GPR-3AEVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [reader] **EVALUATOR** *EVOLUTIONARY-ALGORITHM (:EVALUATOR)*
+- [reader] **EVALUATOR** *[EVOLUTIONARY-ALGORITHM][f5ee] (:EVALUATOR)*
 
     A function of two arguments: the
     [`EVOLUTIONARY-ALGORITHM`][f5ee] object and an individual. It must return
@@ -151,7 +150,7 @@ individuals.
 
 <a id="x-28MGL-GPR-3AMASS-EVALUATOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [reader] **MASS-EVALUATOR** *EVOLUTIONARY-ALGORITHM (:MASS-EVALUATOR = NIL)*
+- [reader] **MASS-EVALUATOR** *[EVOLUTIONARY-ALGORITHM][f5ee] (:MASS-EVALUATOR = NIL)*
 
     `NIL` or a function of three arguments: the
     [`EVOLUTIONARY-ALGORITHM`][f5ee] object, the population vector and the
@@ -163,7 +162,7 @@ individuals.
 
 <a id="x-28MGL-GPR-3AFITNESS-KEY-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [reader] **FITNESS-KEY** *EVOLUTIONARY-ALGORITHM (:FITNESS-KEY = #'IDENTITY)*
+- [reader] **FITNESS-KEY** *[EVOLUTIONARY-ALGORITHM][f5ee] (:FITNESS-KEY = #'IDENTITY)*
 
     A function that returns a real number for an
     object returned by [`EVALUATOR`][9a7e]. It is called when two fitness are to
@@ -175,7 +174,7 @@ individuals.
 
 <a id="x-28MGL-GPR-3A-40GPR-EA-TRAINING-20MGL-PAX-3ASECTION-29"></a>
 
-### 4.3 Training
+### 3.3 Training
 
 Training is easy: one creates an object of a subclass of
 [`EVOLUTIONARY-ALGORITHM`][f5ee] such as [`GENETIC-PROGRAMMING`][4643] or
@@ -193,14 +192,14 @@ generations or until the [`FITTEST`][9631] individual is good enough.
 
 <a id="x-28MGL-GPR-3AFITTEST-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [reader] **FITTEST** *EVOLUTIONARY-ALGORITHM (= NIL)*
+- [reader] **FITTEST** *[EVOLUTIONARY-ALGORITHM][f5ee] (= NIL)*
 
     The fittest individual ever to be seen and its
     fittness as a cons cell.
 
 <a id="x-28MGL-GPR-3AFITTEST-CHANGED-FN-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AEVOLUTIONARY-ALGORITHM-29-29"></a>
 
-- [accessor] **FITTEST-CHANGED-FN** *EVOLUTIONARY-ALGORITHM (:FITTEST-CHANGED-FN = NIL)*
+- [accessor] **FITTEST-CHANGED-FN** *[EVOLUTIONARY-ALGORITHM][f5ee] (:FITTEST-CHANGED-FN = NIL)*
 
     If non-`NIL`, a function that's called when [`FITTEST`][9631]
     is updated with three arguments: the [`EVOLUTIONARY-ALGORITHM`][f5ee]
@@ -209,11 +208,11 @@ generations or until the [`FITTEST`][9631] individual is good enough.
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-20MGL-PAX-3ASECTION-29"></a>
 
-## 5 Genetic Programming
+## 4 Genetic Programming
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-BACKGROUND-20MGL-PAX-3ASECTION-29"></a>
 
-### 5.1 Background
+### 4.1 Background
 
 What is Genetic Programming? This is what Wikipedia has to say:
 
@@ -234,7 +233,7 @@ with sexps.
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-TUTORIAL-20MGL-PAX-3ASECTION-29"></a>
 
-### 5.2 Tutorial
+### 4.2 Tutorial
 
 GPR works with typed expressions. Mutation and crossover never
 produce expressions that fail with a type error. Let's define a
@@ -346,7 +345,7 @@ example/symbolic-regression.lisp.
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-EXPRESSIONS-20MGL-PAX-3ASECTION-29"></a>
 
-### 5.3 Expressions
+### 4.3 Expressions
 
 Genetic programming works with a population of individuals. The
 individuals are sexps that may be evaluated directly by [`EVAL`][0d6e] or by
@@ -365,14 +364,14 @@ literal lists.
 
 <a id="x-28MGL-GPR-3ARESULT-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29"></a>
 
-- [reader] **RESULT-TYPE** *EXPRESSION-CLASS (:RESULT-TYPE)*
+- [reader] **RESULT-TYPE** *[EXPRESSION-CLASS][95f7] (:RESULT-TYPE)*
 
     Expressions belonging to this expression class
     must evaluate to a value of this lisp type.
 
 <a id="x-28MGL-GPR-3AWEIGHT-20-28MGL-PAX-3AREADER-20MGL-GPR-3AEXPRESSION-CLASS-29-29"></a>
 
-- [reader] **WEIGHT** *EXPRESSION-CLASS (:WEIGHT = 1)*
+- [reader] **WEIGHT** *[EXPRESSION-CLASS][95f7] (:WEIGHT = 1)*
 
     The probability of an expression class to be
     selected from a set of candidates is proportional to its
@@ -400,13 +399,13 @@ literal lists.
 
 <a id="x-28MGL-GPR-3ANAME-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29"></a>
 
-- [reader] **NAME** *OPERATOR (:NAME)*
+- [reader] **NAME** *[OPERATOR][b75b] (:NAME)*
 
     A symbol that's the name of the operator.
 
 <a id="x-28MGL-GPR-3AARGUMENT-TYPES-20-28MGL-PAX-3AREADER-20MGL-GPR-3AOPERATOR-29-29"></a>
 
-- [reader] **ARGUMENT-TYPES** *OPERATOR (:ARGUMENT-TYPES)*
+- [reader] **ARGUMENT-TYPES** *[OPERATOR][b75b] (:ARGUMENT-TYPES)*
 
     A list of lisp types. One for each argument of
     this operator.
@@ -440,7 +439,7 @@ literal lists.
 
 <a id="x-28MGL-GPR-3ABUILDER-20-28MGL-PAX-3AREADER-20MGL-GPR-3ALITERAL-29-29"></a>
 
-- [reader] **BUILDER** *LITERAL (:BUILDER)*
+- [reader] **BUILDER** *[LITERAL][32b7] (:BUILDER)*
 
     A function of no arguments that returns a random
     literal that belongs to its literal class.
@@ -482,7 +481,7 @@ literal lists.
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-BASICS-20MGL-PAX-3ASECTION-29"></a>
 
-### 5.4 Basics
+### 4.4 Basics
 
 To start the evolutionary process one creates a GP object,
 adds to it the individuals (see [`ADD-INDIVIDUAL`][4a1e]) that make up the
@@ -510,7 +509,7 @@ next generation.
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-SEARCH-SPACE-20MGL-PAX-3ASECTION-29"></a>
 
-### 5.5 Search Space
+### 4.5 Search Space
 
 The search space of the GP is defined by the available operators,
 literals and the type of the final result produced. The evaluator
@@ -518,21 +517,21 @@ function acts as the guiding light.
 
 <a id="x-28MGL-GPR-3AOPERATORS-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [reader] **OPERATORS** *GENETIC-PROGRAMMING (:OPERATORS)*
+- [reader] **OPERATORS** *[GENETIC-PROGRAMMING][4643] (:OPERATORS)*
 
     The set of [`OPERATOR`][b75b]s from which (together
     with [`LITERAL`][32b7]s) individuals are built.
 
 <a id="x-28MGL-GPR-3ALITERALS-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [reader] **LITERALS** *GENETIC-PROGRAMMING (:LITERALS)*
+- [reader] **LITERALS** *[GENETIC-PROGRAMMING][4643] (:LITERALS)*
 
     The set of [`LITERAL`][32b7]s from which (together
     with [`OPERATOR`][b75b]s) individuals are built.
 
 <a id="x-28MGL-GPR-3ATOPLEVEL-TYPE-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [reader] **TOPLEVEL-TYPE** *GENETIC-PROGRAMMING (:TOPLEVEL-TYPE = T)*
+- [reader] **TOPLEVEL-TYPE** *[GENETIC-PROGRAMMING][4643] (:TOPLEVEL-TYPE = T)*
 
     The type of the results produced by individuals.
     If the problem is to find the minimum a 1d real function then this
@@ -549,14 +548,14 @@ function acts as the guiding light.
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-REPRODUCTION-20MGL-PAX-3ASECTION-29"></a>
 
-### 5.6 Reproduction
+### 4.6 Reproduction
 
 The [`RANDOMIZER`][612d] and [`SELECTOR`][049c] functions define how mutation and
 recombination occur.
 
 <a id="x-28MGL-GPR-3ARANDOMIZER-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [reader] **RANDOMIZER** *GENETIC-PROGRAMMING (:RANDOMIZER)*
+- [reader] **RANDOMIZER** *[GENETIC-PROGRAMMING][4643] (:RANDOMIZER)*
 
     Used for mutations, this is a function of three
     arguments: the GP object, the type the expression must produce and
@@ -565,7 +564,7 @@ recombination occur.
 
 <a id="x-28MGL-GPR-3ASELECTOR-20-28MGL-PAX-3AREADER-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [reader] **SELECTOR** *GENETIC-PROGRAMMING (:SELECTOR)*
+- [reader] **SELECTOR** *[GENETIC-PROGRAMMING][4643] (:SELECTOR)*
 
     A function of two arguments: the GP object and a
     vector of fitnesses. It must return the and index into the fitness
@@ -590,7 +589,7 @@ recombination occur.
 
 <a id="x-28MGL-GPR-3A-40GPR-GP-ENVIRONMENT-20MGL-PAX-3ASECTION-29"></a>
 
-### 5.7 Environment
+### 4.7 Environment
 
 The new generation is created by applying a reproduction operator
 until [`POPULATION-SIZE`][ce25] is reached in the new generation. At each
@@ -598,7 +597,7 @@ step, a reproduction operator is randomly chosen.
 
 <a id="x-28MGL-GPR-3ACOPY-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [accessor] **COPY-CHANCE** *GENETIC-PROGRAMMING (:COPY-CHANCE = 0)*
+- [accessor] **COPY-CHANCE** *[GENETIC-PROGRAMMING][4643] (:COPY-CHANCE = 0)*
 
     The probability of the copying reproduction
     operator being chosen. Copying simply creates an exact copy of a
@@ -606,7 +605,7 @@ step, a reproduction operator is randomly chosen.
 
 <a id="x-28MGL-GPR-3AMUTATION-CHANCE-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [accessor] **MUTATION-CHANCE** *GENETIC-PROGRAMMING (:MUTATION-CHANCE = 0)*
+- [accessor] **MUTATION-CHANCE** *[GENETIC-PROGRAMMING][4643] (:MUTATION-CHANCE = 0)*
 
     The probability of the mutation reproduction
     operator being chosen. Mutation creates a randomly altered copy of
@@ -617,7 +616,7 @@ take place.
 
 <a id="x-28MGL-GPR-3AKEEP-FITTEST-P-20-28MGL-PAX-3AACCESSOR-20MGL-GPR-3AGENETIC-PROGRAMMING-29-29"></a>
 
-- [accessor] **KEEP-FITTEST-P** *GENETIC-PROGRAMMING (:KEEP-FITTEST-P = T)*
+- [accessor] **KEEP-FITTEST-P** *[GENETIC-PROGRAMMING][4643] (:KEEP-FITTEST-P = T)*
 
     If true, then the fittest individual is always
     copied without mutation to the next generation. Of course, it may
@@ -625,7 +624,7 @@ take place.
 
 <a id="x-28MGL-GPR-3A-40GPR-DE-20MGL-PAX-3ASECTION-29"></a>
 
-## 6 Differential Evolution
+## 5 Differential Evolution
 
 The concepts in this section are covered by [Differential
 Evolution: A Survey of the State-of-the-Art][1].
@@ -645,7 +644,7 @@ Evolution: A Survey of the State-of-the-Art][1].
 
 <a id="x-28MGL-GPR-3AMAP-WEIGHTS-INTO-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
 
-- [reader] **MAP-WEIGHTS-INTO-FN** *DIFFERENTIAL-EVOLUTION (:MAP-WEIGHTS-INTO-FN = #'MAP-INTO)*
+- [reader] **MAP-WEIGHTS-INTO-FN** *[DIFFERENTIAL-EVOLUTION][a4e6] (:MAP-WEIGHTS-INTO-FN = #'MAP-INTO)*
 
     The vector of numbers (the 'weights') are most
     often stored in some kind of array. All individuals must have the
@@ -655,7 +654,7 @@ Evolution: A Survey of the State-of-the-Art][1].
 
 <a id="x-28MGL-GPR-3ACREATE-INDIVIDUAL-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
 
-- [reader] **CREATE-INDIVIDUAL-FN** *DIFFERENTIAL-EVOLUTION (:CREATE-INDIVIDUAL-FN)*
+- [reader] **CREATE-INDIVIDUAL-FN** *[DIFFERENTIAL-EVOLUTION][a4e6] (:CREATE-INDIVIDUAL-FN)*
 
     Holds a function of one argument, the DE, that
     returns a new individual that needs not be initialized in any way.
@@ -663,14 +662,14 @@ Evolution: A Survey of the State-of-the-Art][1].
 
 <a id="x-28MGL-GPR-3AMUTATE-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
 
-- [reader] **MUTATE-FN** *DIFFERENTIAL-EVOLUTION (:MUTATE-FN)*
+- [reader] **MUTATE-FN** *[DIFFERENTIAL-EVOLUTION][a4e6] (:MUTATE-FN)*
 
     One of the supplied mutation functions:
     [`MUTATE/RAND/1`][720f] [`MUTATE/BEST/1`][2fdd] [`MUTATE/CURRENT-TO-BEST/2`][f19b].
 
 <a id="x-28MGL-GPR-3ACROSSOVER-FN-20-28MGL-PAX-3AREADER-20MGL-GPR-3ADIFFERENTIAL-EVOLUTION-29-29"></a>
 
-- [reader] **CROSSOVER-FN** *DIFFERENTIAL-EVOLUTION (:CROSSOVER-FN = #'CROSSOVER/BINARY)*
+- [reader] **CROSSOVER-FN** *[DIFFERENTIAL-EVOLUTION][a4e6] (:CROSSOVER-FN = #'CROSSOVER/BINARY)*
 
     A function of three arguments, the DE and two
     individuals, that destructively modifies the second individual by
@@ -704,7 +703,13 @@ Evolution: A Survey of the State-of-the-Art][1].
 
 <a id="x-28MGL-GPR-3A-40GPR-DE-SANSDE-20MGL-PAX-3ASECTION-29"></a>
 
-### 6.1 SANSDE
+### 5.1 SANSDE
+
+See the paper [Self-adaptive Differential Evolution with
+Neighborhood Search][1].
+
+[1]: http://staff.ustc.edu.cn/~ketang/papers/YangTangYao_CEC08a.pdf
+
 
 <a id="x-28MGL-GPR-3ASANSDE-20CLASS-29"></a>
 
@@ -729,7 +734,6 @@ Evolution: A Survey of the State-of-the-Art][1].
   [2e8a]: #x-28MGL-GPR-3A-40GPR-BACKGROUND-20MGL-PAX-3ASECTION-29 "Background"
   [2fdd]: #x-28MGL-GPR-3AMUTATE-2FBEST-2F1-20FUNCTION-29 "MGL-GPR:MUTATE/BEST/1 FUNCTION"
   [32b7]: #x-28MGL-GPR-3ALITERAL-20CLASS-29 "MGL-GPR:LITERAL CLASS"
-  [34da]: #x-28-22mgl-gpr-22-20ASDF-2FSYSTEM-3ASYSTEM-29 '"mgl-gpr" ASDF/SYSTEM:SYSTEM'
   [40a0]: #x-28MGL-GPR-3A-40GPR-DE-SANSDE-20MGL-PAX-3ASECTION-29 "SANSDE"
   [4643]: #x-28MGL-GPR-3AGENETIC-PROGRAMMING-20CLASS-29 "MGL-GPR:GENETIC-PROGRAMMING CLASS"
   [4a1e]: #x-28MGL-GPR-3AADD-INDIVIDUAL-20FUNCTION-29 "MGL-GPR:ADD-INDIVIDUAL FUNCTION"

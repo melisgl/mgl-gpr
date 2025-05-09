@@ -192,9 +192,6 @@
 
 
 (defsection @gpr-de-sansde (:title "\\SANSDE")
-  (sansde class))
-
-(defsection @sansde ()
   "See the paper [Self-adaptive Differential Evolution with
   Neighborhood Search][1].
 
