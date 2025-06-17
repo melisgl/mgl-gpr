@@ -12,7 +12,7 @@
   :description "MGL-GPR is a library of evolutionary algorithms such
   as Genetic Programming (evolving typed expressions from a set of
   operators and constants) and Differential Evolution."
-  :depends-on (#:mgl-pax)
+  :depends-on ("alexandria" "mgl-pax")
   :components ((:module "src"
                 :serial t
                 :components ((:file "package")
@@ -29,7 +29,7 @@
   :author "Gábor Melis <mega@retes.hu>"
   :mailto "mega@retes.hu"
   :description "Test system for MGL-GPR."
-  :depends-on (#:mgl-gpr)
+  :depends-on ("mgl-gpr")
   :components ((:module "test"
                 :serial t
                 :components ((:file "test-tree")
